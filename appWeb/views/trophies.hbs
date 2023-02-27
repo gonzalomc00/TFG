@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Universidad de murcia">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Trophies</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+    <link href="/stylesheets/main.css" rel="stylesheet" />
+    <link href="/stylesheets/buttonPlay.css" rel="stylesheet" />
+    <link href="/stylesheets/vitrina.css" rel="stylesheet" />
+</head>
+
+<body>
+    <main class="d-flex justify-content-between align-items-center" style="width: 100%;">
+        <div class="album py-5" style="width: 100%;">
+            <div class="container">
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3">
+                    <div class="col">
+                        <div class="card" id="start">
+                            {{#if logro1}}
+                            <div class="img" style="background-color: green;">
+                            {{else}}
+                            <div class="img">
+                            {{/if}}
+                                <img src="/images/logros/comienzo.svg" alt="Good Start" width="50" height="50">
+                            </div>
+                            <h1>Good start</h1>
+                            <p>
+                                You need almost 1 gold medal and 10 infinite points.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card" id="bestTeammate">
+                            {{#if logro2}}
+                            <div class="img" style="background-color: green;">
+                            {{else}}
+                            <div class="img">
+                            {{/if}}
+                                <img src="/images/logros/alumna.svg" alt="Best teammate" width="50" height="50">
+                            </div>
+                            <h1>Best teammate</h1>
+                            <p>
+                                You need 1 gold trophy.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card" id="Unstoppable">
+                            {{#if logro3}}
+                            <div class="img" style="background-color: green;">
+                            {{else}}
+                            <div class="img">
+                            {{/if}}
+                                <img src="/images/logros/brazo.svg" alt="unstoppable" width="50" height="50">
+                            </div>
+                            <h1>Unstoppable</h1>
+                            <p>
+                                You need almost 15 points in one game in Infinite mode.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card" id="Wessex">
+                            {{#if logro4}}
+                            <div class="img" style="background-color: green;">
+                            {{else}}
+                            <div class="img">
+                            {{/if}}
+                                <img src="/images/logros/wessex.svg" alt="unstoppable" width="50" height="50">
+                            </div>
+                            <h1>Wessex's Count</h1>
+                            <p>
+                                You need almost an amount of 20 medals (gold, silver or bronze) of Single mode.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card" id="York">
+                            {{#if logro5}}
+                            <div class="img" style="background-color: green;">
+                            {{else}}
+                            <div class="img">
+                            {{/if}}
+                                <img src="/images/logros/blancaRosa.svg" alt="Cambridge's Prince" width="50" height="50">
+                            </div>
+                            <h1>York's Duke</h1>
+                            <p>
+                                You need almost an amount of 10 gold medals of Single mode.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card" id="Cambridge's Prince">
+                            {{#if logro6}}
+                            <div class="img" style="background-color: green;">
+                            {{else}}
+                            <div class="img">
+                            {{/if}}
+                                <img src="/images/logros/escudoCambridge.svg" alt="Cambridge's Prince" width="50" height="50">
+                            </div>
+                            <h1>Cambridge's Prince</h1>
+                            <p>
+                                You need 1 gold trophy and almost an amount of 15 points in Infinite Mode.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card" id="Cambridge's Duke">
+                            {{#if logro7}}
+                            <div class="img" style="background-color: green;">
+                            {{else}}
+                            <div class="img">
+                            {{/if}}
+                                <img src="/images/logros/uk.svg" alt="Cambridge's Duke" width="50" height="50">
+                            </div>
+                            <h1>Cambridge's Duke</h1>
+                            <p>
+                                You need 1 gold trophy, almost an amount of 15 points in Infinite Mode and 10 gold medals in Single mode.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card" id="UK's Queen">
+                            {{#if logro8}}
+                            <div class="img" style="background-color: green;">
+                            {{else}}
+                            <div class="img">
+                            {{/if}}
+                                <img src="/images/logros/Elizabeth.svg" alt="UK's Queen" width="50" height="50">
+                            </div>
+                            <h1>UK's Queen</h1>
+                            <p>
+                                You need 3 gold trophy, almost an amount of 25 points in Infinite Mode and 20 gold medals in Single mode.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card" id="Wales's Prince">
+                            {{#if logro9}}
+                            <div class="img" style="background-color: green;">
+                            {{else}}
+                            <div class="img">
+                            {{/if}}
+                                <img src="/images/logros/corona.svg" alt="Wales's Prince" width="50" height="50">
+                            </div>
+                            <h1>Wales's Prince</h1>
+                            <p>
+                                You need 2 gold trophy, almost an amount of 20 points in Infinite Mode and 15 gold medals in Single mode.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card" id="Sussex's Duke">
+                            {{#if logro10}}
+                            <div class="img" style="background-color: green;">
+                            {{else}}
+                            <div class="img">
+                            {{/if}}
+                                <img src="/images/logros/sussex.svg" alt="Sussex's Duke" width="50" height="50">
+                            </div>
+                            <h1>Sussex's Duke</h1>
+                            <p>
+                                You need almost an amount of 20 points in Infinite Mode and 5 gold medals in Single mode.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+    <script src="/javascripts/addHyF.js"></script>
+</body>
+
+</html>

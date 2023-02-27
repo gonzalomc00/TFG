@@ -1,0 +1,16 @@
+#clock {
+	width: 10%;
+	height: 10%;
+	border-radius: 50%;
+	background-color: lightgrey;
+	margin: 20px;
+	float: right;
+}
+
+.spanClock {
+	display: block;
+	width: 100%;
+	margin: auto;
+	text-align: center;
+	font-size: 5vw;
+}
