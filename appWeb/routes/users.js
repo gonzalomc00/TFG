@@ -3,8 +3,8 @@ var express = require('express');
 var router = express.Router();
 
 
-const https = require('https');
-const httpsAgent = new https.Agent({
+const http = require('http');
+const httpAgent = new http.Agent({
   rejectUnauthorized: false
 });
 
@@ -17,9 +17,9 @@ router.get('/login', function (req, res, next) {
 router.post('/signin', async function (req, res, next) {
   let mail = req.body['mail'];
   let pass = req.body['contrasena'];
-  toResponse = await fetch('https://192.168.1.132:8384/login', {
+  toResponse = await fetch('http://127.0.0.1:8384/login', {
     method: 'post',
-    agent: httpsAgent,
+    agent: httpAgent,
     redirect: 'follow',
     body: JSON.stringify({ 'mail': mail, 'contrasena': pass })
   })
@@ -55,7 +55,7 @@ router.get('/achievements', async function (req, res, next) {
   if(!req.session.admin && req.session.user){
     var vitrina;
 
-    await fetch('https://192.168.1.132:8384/usuarios', {
+    await fetch('http://127.0.0.1:8384/usuarios', {
         method: 'GET',
         agent: httpsAgent
     })

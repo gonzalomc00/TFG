@@ -49,7 +49,7 @@ async function enviarFile(){
     var fD = new FormData();
     fD.append("fileTxt",document.getElementById('fileTxt').files[0]);
 
-    let res = await fetch('https://192.168.1.132:8385/preguntas/registerFile', {
+    let res = await fetch('https://127.0.0.1:8385/preguntas/registerFile', {
         method: 'POST',
         redirect : 'follow',
         body: fD

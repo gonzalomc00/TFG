@@ -1,7 +1,7 @@
 function sendMail(){
    
     const data = new FormData(document.getElementById('code'));
-    var request = new Request('https://192.168.1.132:8384/mensaje',{
+    var request = new Request('http://127.0.0.1:8384/mensaje',{
         method: 'POST',
         mode: 'no-cors',
         redirect: 'follow',
@@ -23,7 +23,7 @@ async function envioRegistro(){
     var name = document.getElementById("floatingUserName").value;
     var passw = document.getElementById("floatingPassword1").value;
     var code = document.getElementById("floatingCode").value;
-    var request = new Request('http://192.168.1.132:8384/alumno',{
+    var request = new Request('http://127.0.0.1:8384/alumno',{
         method: 'POST',
         redirect: 'follow',
         body: JSON.stringify({"mail":mail,"name":name,"passw":window.btoa(passw),"code":code})

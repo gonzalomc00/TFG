@@ -2,8 +2,8 @@ const fetch = require('node-fetch');
 var express = require('express');
 var router = express.Router();
 
-const https = require('https');
-const httpsAgent = new https.Agent({
+const http = require('http');
+const httpAgent = new http.Agent({
   rejectUnauthorized: false
 });
 
@@ -16,9 +16,9 @@ router.get('/', async function(req, res, next) {
     if(!req.session.admin && req.session.user){
         res.render('playerMain');
     }else if(req.session.admin && req.session.user){
-        await fetch('https://192.168.1.132:8384/usuarios/top',{
+        await fetch('http://127.0.0.1:8384/usuarios/top',{
             method:'GET',
-            agent: httpsAgent
+            agent: httpAgent
         })
         .then(res => res.json())
         .then(res => {
@@ -67,9 +67,9 @@ router.get('/infiniteMode/final', function(req, res, next) {
 
 router.get('/stats', async function (req, res, next) {
     if(!req.session.admin && req.session.user){
-        await fetch('https://192.168.1.132:8384/usuarios/top', {
+        await fetch('http://127.0.0.1:8384/usuarios/top', {
             method: 'POST',
-            agent: httpsAgent,
+            agent: httpAgent,
             redirect: 'follow',
             body: JSON.stringify({"mail":req.session.user})
         })
@@ -90,9 +90,9 @@ router.get('/trophies', async function (req, res, next) {
     if(!req.session.admin && req.session.user){
         var vitrina;
 
-        await fetch('https://192.168.1.132:8384/usuarios', {
+        await fetch('http://127.0.0.1:8384/usuarios', {
             method: 'GET',
-            agent: httpsAgent
+            agent: httpAgent
         })
             .then(res => res.json())
             .then(res => {

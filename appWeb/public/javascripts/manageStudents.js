@@ -9,7 +9,7 @@ function alumnoToProfesor(mail) {
           }
       }).then((result) => {
         if (result == true) {
-            fetch("https://192.168.1.132:8384/usuarios/aluToProf", {
+            fetch("http://127.0.0.1:8384/usuarios/aluToProf", {
                 method: 'POST',
                 redirect: 'follow',
                 body: JSON.stringify({'mail':mail})
@@ -26,10 +26,10 @@ function alumnoToProfesor(mail) {
 
 function rmvAlumno(mail) {
 
-    fetch("https://192.168.1.132:8384/usuarios/rmvAlumno", {
+    fetch("http://127.0.0.1:8384/usuarios/rmvAlumno", {
         method: 'POST',
         redirect: 'follow',
-        body: JSON.stringify({'mailProfesor':window.localStorage.getItem("correo")})
+        body: JSON.stringify({'mailAlumno':mail})
     })
     .then( res => res.json())
     .then( res => {
@@ -63,7 +63,7 @@ window.onload = function () {
         .then(data => { return data.replace('<li><label id="mailUser"></label></li>','<li><label id="mailUser">'+ window.localStorage.getItem("correo") +'</label></li>')})
         .then(data => { document.querySelector("body").insertAdjacentHTML('beforebegin', data); })
 
-    fetch("https://192.168.1.132:8384/usuarios", {
+    fetch("http://127.0.0.1:8384/usuarios", {
         method: 'GET',
         redirect: 'follow'
     })
@@ -84,7 +84,7 @@ window.onload = function () {
         }
     })
     
-    fetch("https://192.168.1.132:8384/usuarios/getTemas", {
+    fetch("http://127.0.0.1:8384/usuarios/getTemas", {
         method: 'POST',
         redirect: 'follow',
         body: JSON.stringify({'mail': window.localStorage.getItem("correo")})
@@ -132,7 +132,7 @@ function updateTemas(){
         "USA Mix" : USAmix
     }
 
-    fetch("https://192.168.1.132:8384/usuarios/chngTemas", {
+    fetch("http://127.0.0.1:8384/usuarios/chngTemas", {
         method: 'POST',
         redirect: 'follow',
         body: JSON.stringify({'mail':mail , 'preguntas':preguntas})

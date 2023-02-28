@@ -41,7 +41,6 @@ def comprobarRegistro(correo) -> bool:
 
 def comprobarLoginAlumno(correo, contrasena) -> Alumno:
     alumno = baseDatos.getAlumnoByMail(correo)
-    print(alumno.mail)
     if(alumno != None and alumno.password == contrasena):
         return alumno
     return None
@@ -67,9 +66,9 @@ def login():
     jon = json.loads(request.data)
     mail = jon["mail"]
     #Decomentación de la contraseña
-    password = base64.b64decode(jon["contrasena"]).__str__()[2:-1]
-    print(password)
-    #password = jon["contrasena"]
+    #password = base64.b64decode(jon["contrasena"]).__str__()[2:-1]
+    #print(password)
+    password = jon["contrasena"]
     alumno = comprobarLoginAlumno(mail,password)
     if(alumno != None):
         contenido = {
@@ -177,14 +176,17 @@ def cambioContrasena():
     code = request.form.get("code")
     mail = request.form.get("mail")
     contra = request.form.get("password")
-    if(diccionario.get(mail)==int(code)):
+    
+    """ if(diccionario.get(mail)==int(code)):
         baseDatos.updatePassword(mail, contra)
         contenido = {
             "resultado" : "OK"
-        }
+        } 
+    
         response = jsonify(contenido)
         response.status_code = 200
         return response
+    
     else:
         contenido = {
             "resultado" : "ERROR",
@@ -193,6 +195,15 @@ def cambioContrasena():
         response = jsonify(contenido)
         response.status_code = 400
         return response
+    """
+    baseDatos.updatePassword(mail,contra)
+    contenido = {
+        "resultado" : "OK"
+    }
+
+    response = jsonify(contenido)
+    response.status_code = 200
+    return response
 
 @app.route("/usuarios", methods=['GET'])
 def getAllAlumnos():
@@ -365,5 +376,5 @@ def getusersTop():
 
 if __name__ == '__main__':
     from waitress import serve
-    app.run(ssl_context=('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.crt', 'C://Users/Gonzalo/Desktop/Universidad/app/security/cert.key'), host='0.0.0.0',port=8384)
-    
+    #app.run(ssl_context=('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.crt', 'C://Users/Gonzalo/Desktop/Universidad/app/security/cert.key'), host='0.0.0.0',port=8384)
+    app.run(host='127.0.0.1',port=8384)

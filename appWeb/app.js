@@ -17,10 +17,12 @@ const fs = require('fs');
 var app = express();
 
 var options = {
+  /*
   secureOptions: constants.SSL_OP_NO_SSLv3 || constants.SSL_OP_NO_SSLv2 || constants.SSL_OP_NO_TLSv1 || constants.SSL_OP_NO_TLSv1_1,
 	key: fs.readFileSync('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.key'),
 	cert: fs.readFileSync('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.crt'),
 	ca: [ fs.readFileSync('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.crt'), fs.readFileSync('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.crt') ]
+  */
 };
 
 //const server = https.createServer(options, app);

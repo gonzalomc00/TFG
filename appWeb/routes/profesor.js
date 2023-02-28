@@ -6,8 +6,8 @@ var express = require('express');
 const { response } = require('express');
 var router = express.Router();
 
-const https = require('https');
-const httpsAgent = new https.Agent({
+const http = require('http');
+const httpAgent = new http.Agent({
   rejectUnauthorized: false
 });
 
@@ -53,10 +53,10 @@ router.post('/addPregunta', async function(req, res, next) {
               }
         }
 
-        toResponse = await fetch('http://192.168.1.132:8385/preguntas/register', {
+        toResponse = await fetch('http://127.0.0.1:8385/preguntas/register', {
             method: 'POST',
             redirect : 'follow',
-            agent: httpsAgent,
+            agent: httpAgent,
             body: JSON.stringify({'question': q, 'response':r, 'category':c, 'image':image.replace('\\\\','\\')})
         })
             .then(res => res.json())
@@ -83,9 +83,9 @@ router.get('/startCC', function(req, res, next) {
 
 router.get('/selectQuestionsCC', async function(req, res, next) {
     if(req.session.admin){
-        var questions = await fetch("http://192.168.1.132:8385/preguntas",{
+        var questions = await fetch("http://127.0.0.1:8385/preguntas",{
             method: 'GET',
-            agent: httpsAgent
+            agent: httpAgent
         })
             .then(res => res.json())
             .then(res => {
