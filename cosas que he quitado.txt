@@ -1,0 +1,11 @@
+- Servicio de correo 
+- Comprobación del código en el envío de sesión
+- Cambio de contraseña - función api.py
+
+
+
+#BUGS ENCONTRADOS#
+
+1. FIXED Borrar usuario: no se eliminan correctamente los usuarios. Esto se debe a que el envío de los datos a la api que maneja 
+los usuarios no es correcto. Se envía mal en el JSON y el correo que se envía es el del profesor y no el del alumno. Lo he 
+arreglado cambiando el correo que se envía en el JSON por el que se pasa por parámetro a la función. 
