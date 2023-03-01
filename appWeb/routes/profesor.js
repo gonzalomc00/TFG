@@ -22,7 +22,7 @@ router.post('/addPregunta', async function(req, res, next) {
     form.uploadDir = uploadFolder;
     form.keepExtensions = true;
     
-    var image = null;
+    var image='';
     var q = null;
     var r = null;
     var c = null;
@@ -47,7 +47,9 @@ router.post('/addPregunta', async function(req, res, next) {
             try {
                 // renames the file in the directory
                 fs.renameSync(file[1].filepath, path.join(uploadFolder, fileName));
+                console.log(uploadFolder+fileName)
                 image = path.join(uploadFolder, fileName);
+                console.log(image)
               } catch (error) {
                 console.log(error);
               }

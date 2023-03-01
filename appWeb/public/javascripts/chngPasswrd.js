@@ -13,7 +13,7 @@ function pedirDatos() {
         fD.append("password", window.btoa(document.getElementById("floatingPassword1").value));
         fD.append("mail", window.localStorage.getItem("correo"));
 
-        fetch('https://127.0.0.1:8384/usuarios/mensajeContra', {
+        fetch('http://127.0.0.1:8384/usuarios/mensajeContra', {
             method: 'POST',
             redirect : 'follow',
             body: fD
@@ -57,7 +57,7 @@ function enviarDatos() {
         fD.append("code",document.getElementById("floatingCode").value);
         fD.append("mail", window.localStorage.getItem("correo"));
 
-        fetch('https://127.0.0.1:8384/usuarios/chngPsswrd', {
+        fetch('http://127.0.0.1:8384/usuarios/chngPsswrd', {
             method: 'POST',
             redirect : 'follow',
             body: fD

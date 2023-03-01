@@ -13,6 +13,7 @@ var ccRouter = require('./routes/CC');
 var battleRouter = require('./routes/battle');
 const constants = require('constants');
 const fs = require('fs');
+const Handlebars = require("handlebars")
 
 var app = express();
 
@@ -24,6 +25,13 @@ var options = {
 	ca: [ fs.readFileSync('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.crt'), fs.readFileSync('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.crt') ]
   */
 };
+
+//Helpers de Handlebars
+
+
+
+//APLICACION 
+
 
 //const server = https.createServer(options, app);
 

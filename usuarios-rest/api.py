@@ -196,6 +196,7 @@ def cambioContrasena():
         response.status_code = 400
         return response
     """
+    print(contra)
     baseDatos.updatePassword(mail,contra)
     contenido = {
         "resultado" : "OK"
