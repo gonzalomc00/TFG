@@ -1,3 +1,12 @@
+#ESTRUCTURA QUE VOY ENTENDIENDO#
+-Creo que la carpeta Routes se encarga de redirigir o enviar las peticiones del servidor, a otras partes del proyecto o a otras apis. 
+
+
+
+
+
+
+#COSAS QUE HE QUITADO#
 - Servicio de correo 
 - Comprobación del código en el envío de sesión
 - Cambio de contraseña - función api.py
@@ -10,6 +19,8 @@
 los usuarios no es correcto. Se envía mal en el JSON y el correo que se envía es el del profesor y no el del alumno. Lo he 
 arreglado cambiando el correo que se envía en el JSON por el que se pasa por parámetro a la función. 
 
-2. Crear pregunta via formulario: no es posible añadir pregunta. Por algún motivo falla al analizar la imagen. Si esta no existe
-intenta usar 'replace' en un objeto que no existe. Si hemos subido una foto, falla igualmente. He probado en la
-versión desplegada y también me da error. 
+2. FIXED Crear pregunta via formulario: no es posible añadir pregunta sin imagen. Por algún motivo falla al analizar la imagen. Si esta no existe
+intenta usar 'replace' en un objeto que no existe.He probado en la versión desplegada y también me da error. 
+
+3. Las preguntas se crean dos veces. Se envían dos solicitudes POST a la api de las preguntas. El formulario, al enviar vacío, realiza un envío aún así, utilizando
+la pregunta vacía. 
