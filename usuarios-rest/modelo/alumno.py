@@ -1,5 +1,6 @@
 from modelo.vitrina import Vitrina
 
+
 class Alumno:
 
     def __init__(self,correo,contrasena,nombre):
@@ -28,3 +29,6 @@ class Alumno:
             "recordInfinito": self.vitrina.recordInfinito,
             "numPartidas": self.vitrina.numPartidas
         }
+    
+    
+

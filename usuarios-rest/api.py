@@ -6,6 +6,7 @@ from mail import enviarCorreoRegistro, enviarCorreoPassword
 from modelo.alumno import Alumno
 import base64
 
+
 from bbdd import DataBase
 
 app = Flask(__name__) #aquí creamos una nueva instancia del servidor Flask.
@@ -31,13 +32,6 @@ def after_request(response):
     return response
 
 #################### FUNCIONES AUXILIARES ####################
-def comprobarRegistro(correo) -> bool:
-    if(not correo.endswith("@um.es")):
-      return False
-    for alumno in baseDatos.getAllAlumnos():
-        if(alumno.mail == correo):
-            return False
-    return True
 
 def comprobarLoginAlumno(correo, contrasena) -> Alumno:
     alumno = baseDatos.getAlumnoByMail(correo)
@@ -61,6 +55,7 @@ def index():
     return "<h1>Hello World!</h1>"
 
 
+
 @app.route("/login", methods=['POST']) 
 def login():
     jon = json.loads(request.data)
@@ -72,7 +67,6 @@ def login():
     alumno = comprobarLoginAlumno(mail,password)
     if(alumno != None):
         contenido = {
-            "resultado":"OK",
             "alumno": True,
             "nombre": alumno.name,
             "correo": alumno.mail,
@@ -91,7 +85,6 @@ def login():
     profesor = comprobarLoginProfesor(mail,password)
     if(profesor != None):
         contenido = {
-            "resultado":"OK",
             "alumno": False,
             "nombre": profesor.name,
             "correo": profesor.mail
@@ -100,12 +93,24 @@ def login():
         response.status_code = 200
         return response
     else:
-        contenido = {
-            "resultado":"ERROR",
-        }
         response = jsonify(contenido)
         response.status_code = 401
         return response
+
+@app.route("/registro/<correo>",methods=['GET'])
+def comprobarRegistro(correo):
+    print("eo")
+    print(correo)
+    
+    if(not correo.endswith("@um.es")):
+      return Response(status=404)
+    for alumno in baseDatos.getAllAlumnos():
+        if(alumno.mail == correo):
+            return Response(status=404)
+    return Response(status=200)
+
+
+
 
 @app.route("/alumno", methods=['POST']) 
 def registro():
@@ -116,6 +121,12 @@ def registro():
     codigo = jon["code"]
     print("ComprobarRegistro:"+comprobarRegistro(mail).__str__())
     print("diccionario:"+(diccionario.get(mail)==int(codigo)).__str__())
+
+    baseDatos.registrarAlumno(mail,password,name)
+    print("registroOK")
+    return Response(status=200)
+
+    """
     if(comprobarRegistro(mail)):
    # if(comprobarRegistro(mail) and diccionario.get(mail)==int(codigo)):
         baseDatos.registrarAlumno(mail,password,name)
@@ -134,19 +145,20 @@ def registro():
         response = jsonify(contenido)
         response.status_code = 200
         return response
+    """
 
 @app.route("/mensaje", methods=['POST'])
 def sendMail():
-    destinatario = request.form.get("email")
+    jon = json.loads(request.data)
+    destinatario = jon["email"]
     foo = random.SystemRandom()
     code = foo.randint(10000,100000)
     enviarCorreoRegistro(destinatario,code)
     contenido = {
-      "resultado": "OK"
+      "codigo": code
     }
     resp = jsonify(contenido)
     resp.status_code = 200
-    diccionario.update({destinatario:code})
     return resp
 
 @app.route("/usuarios/mensajeContra", methods=['POST'])

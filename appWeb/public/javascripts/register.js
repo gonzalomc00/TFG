@@ -18,7 +18,6 @@ function sendMail(){
 }
 
 async function envioRegistro(){
-    console.log('buenas')
     var mail = document.getElementById("floatingMail").value;
     var name = document.getElementById("floatingUserName").value;
     var passw = document.getElementById("floatingPassword1").value;

@@ -1,7 +1,14 @@
 #ESTRUCTURA QUE VOY ENTENDIENDO#
 -Creo que la carpeta Routes se encarga de redirigir o enviar las peticiones del servidor, a otras partes del proyecto o a otras apis. 
 
+-Routes se encarga de recibir las peticiones de los usuarios, junto a la accion que quieren realizar y la URL. Se pueden usar como precondición antes de realizar
+la acción propiamente dicha. 
 
+-En las funciones de los JavaScripts, el parámetro next hace referencia a la siguiente función a la que se va a llamar. Se llaman en caso de que no se complete 
+la acción que estamos realizando de manera correcta. 
+
+-Routes es como el punto de choque con el usuario y sus peticiones. Dependiendo de las peticiones que este realice, entonces va a ir redirigiendo y cargando otras 
+páginas, o en algunos casos, realizar la acción por si mismo si no requiere cargar nada ??
 
 
 
