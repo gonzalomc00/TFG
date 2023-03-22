@@ -11,7 +11,7 @@ from mail import enviarCorreoLogroToProfesor, enviarCorreoLogroToAlumno
 
 
 def parseJsontoAlumno(json) -> Alumno:
-    alumno = Alumno(json['mail'], json['password'], json['name'])
+    alumno = Alumno(json['mail'], json['password'], json['name'],json['lastname'])
     vitrinaJson = json['vitrina']
     nuevoVitrina = Vitrina()
     nuevoVitrina.setMedallaOro(vitrinaJson['medallaOro'])
@@ -40,11 +40,12 @@ class DataBase:
         #self.db = conn.Juego
         self.db = conn.test
 
-    def registrarAlumno(self, mail, password, name):
+    def registrarAlumno(self, mail, password, name,lastname):
         collection = self.db.Alumno
         aInsertar = {"mail": mail,
                      "password": password,
                      "name": name,
+                     "lastname":lastname,
                      "vitrina": {"medallaOro": 0,
                                  "medallaPlata": 0,
                                  "medallaBronce": 0,

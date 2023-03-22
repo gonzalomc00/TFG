@@ -3,10 +3,11 @@ from modelo.vitrina import Vitrina
 
 class Alumno:
 
-    def __init__(self,correo,contrasena,nombre):
+    def __init__(self,correo,contrasena,nombre,lastname):
         self.mail = correo
         self.password = contrasena
         self.name = nombre
+        self.lastname=lastname
         self.vitrina = Vitrina()
 
     def setVitrina(self, vitrin):

@@ -48,6 +48,7 @@ def comprobarLoginProfesor(correo, contrasena) -> Alumno:
         return profesor
     return None
 
+
 #################### COMIENZO API ####################
 
 @app.route("/")
@@ -69,6 +70,7 @@ def login():
         contenido = {
             "alumno": True,
             "nombre": alumno.name,
+            "lastname":alumno.lastname,
             "correo": alumno.mail,
             "vitrina": {
                 "medallaOro" : alumno.vitrina.medallaOro,
@@ -93,15 +95,10 @@ def login():
         response.status_code = 200
         return response
     else:
-        response = jsonify(contenido)
-        response.status_code = 401
-        return response
+        return Response(status=401)
 
 @app.route("/registro/<correo>",methods=['GET'])
 def comprobarRegistro(correo):
-    print("eo")
-    print(correo)
-    
     if(not correo.endswith("@um.es")):
       return Response(status=404)
     for alumno in baseDatos.getAllAlumnos():
@@ -109,7 +106,14 @@ def comprobarRegistro(correo):
             return Response(status=404)
     return Response(status=200)
 
-
+@app.route("/mensaje",methods=['GET'])
+def comprobarCodigo():
+    email = request.args.get('email')
+    code = request.args.get('code')
+    if(diccionario.get(email)==int(code)):
+        return Response(status=200)
+    return Response(status=404)
+    
 
 
 @app.route("/alumno", methods=['POST']) 
@@ -118,15 +122,14 @@ def registro():
     mail = jon["mail"]
     password = jon["passw"]
     name = jon["name"]
-    codigo = jon["code"]
+    lastname=jon["lastname"]
     print("ComprobarRegistro:"+comprobarRegistro(mail).__str__())
-    print("diccionario:"+(diccionario.get(mail)==int(codigo)).__str__())
-
-    baseDatos.registrarAlumno(mail,password,name)
+    baseDatos.registrarAlumno(mail,password,name,lastname)
     print("registroOK")
     return Response(status=200)
-
     """
+    CODIGO ANTIGUO
+
     if(comprobarRegistro(mail)):
    # if(comprobarRegistro(mail) and diccionario.get(mail)==int(codigo)):
         baseDatos.registrarAlumno(mail,password,name)
@@ -154,12 +157,8 @@ def sendMail():
     foo = random.SystemRandom()
     code = foo.randint(10000,100000)
     enviarCorreoRegistro(destinatario,code)
-    contenido = {
-      "codigo": code
-    }
-    resp = jsonify(contenido)
-    resp.status_code = 200
-    return resp
+    diccionario.update({destinatario:code})
+    return Response(status=200)
 
 @app.route("/usuarios/mensajeContra", methods=['POST'])
 def sendMailContrasena():
