@@ -11,7 +11,7 @@ from mail import enviarCorreoLogroToProfesor, enviarCorreoLogroToAlumno
 
 
 def parseJsontoAlumno(json) -> Alumno:
-    alumno = Alumno(json['mail'], json['password'], json['name'],json['lastname'])
+    alumno = Alumno(json['_id'],json['mail'], json['password'], json['name'],json['lastname'])
     vitrinaJson = json['vitrina']
     nuevoVitrina = Vitrina()
     nuevoVitrina.setMedallaOro(vitrinaJson['medallaOro'])

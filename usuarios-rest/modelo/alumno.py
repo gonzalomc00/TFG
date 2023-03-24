@@ -3,7 +3,8 @@ from modelo.vitrina import Vitrina
 
 class Alumno:
 
-    def __init__(self,correo,contrasena,nombre,lastname):
+    def __init__(self,id,correo,contrasena,nombre,lastname):
+        self._id=id
         self.mail = correo
         self.password = contrasena
         self.name = nombre

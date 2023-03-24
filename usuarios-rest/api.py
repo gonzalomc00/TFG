@@ -1,15 +1,23 @@
+from os import getcwd
+import os
 from pprint import pprint
 import random
 import json
-from flask import Flask, Response, request, jsonify
+from flask import Flask, Response, flash, redirect, request, jsonify, url_for
+from werkzeug.utils import secure_filename
 from mail import enviarCorreoRegistro, enviarCorreoPassword
 from modelo.alumno import Alumno
 import base64
 
 
+
 from bbdd import DataBase
 
+UPLOAD_FOLDER = getcwd() + '/images/'
+ALLOWED_EXTENSIONS={'jpg','jpeg','png'}
+
 app = Flask(__name__) #aquí creamos una nueva instancia del servidor Flask.
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 baseDatos = DataBase()
 listAlumnos = []
 diccionario = {}
@@ -28,7 +36,7 @@ def after_request(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Credentials"] = "true"
     response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
-    response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+    response.headers["Access-Control-Allow-Headers"] = "Accept, enctype, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
     return response
 
 #################### FUNCIONES AUXILIARES ####################
@@ -47,6 +55,10 @@ def comprobarLoginProfesor(correo, contrasena) -> Alumno:
     if(profesor != None and profesor.password == contrasena):
         return profesor
     return None
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 #################### COMIENZO API ####################
@@ -69,6 +81,7 @@ def login():
     if(alumno != None):
         contenido = {
             "alumno": True,
+            "_id": alumno._id,
             "nombre": alumno.name,
             "lastname":alumno.lastname,
             "correo": alumno.mail,
@@ -385,6 +398,26 @@ def getusersTop():
     response.status_code = 200
     return response
 
+
+#ACTUALIZAR FOTOS
+@app.route("/usuarios/<id>", methods=['POST'])
+def uploadFotoPerfil(id):
+
+    print(jon)
+    if 'files' not in request.files:
+        flash('No file part')
+        return Response(status=400)
+    
+    file= request.files['files']
+    
+    if file.filename =='':
+        flash('No selected file')
+        return Response(status=400)
+    
+    if file and allowed_file(file.filename):
+        filename=secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+        return Response(status=200)
 
 if __name__ == '__main__':
     from waitress import serve
