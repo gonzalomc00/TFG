@@ -1,5 +1,6 @@
 import json
 import urllib
+from bson import ObjectId
 from bson.json_util import dumps
 from pymongo import MongoClient
 from modelo.alumno import Alumno
@@ -11,7 +12,7 @@ from mail import enviarCorreoLogroToProfesor, enviarCorreoLogroToAlumno
 
 
 def parseJsontoAlumno(json) -> Alumno:
-    alumno = Alumno(json['_id'],json['mail'], json['password'], json['name'],json['lastname'])
+    alumno = Alumno(json['_id'],json['mail'], json['password'], json['name'],json['lastname'],json['image'])
     vitrinaJson = json['vitrina']
     nuevoVitrina = Vitrina()
     nuevoVitrina.setMedallaOro(vitrinaJson['medallaOro'])
@@ -28,6 +29,9 @@ def parseJsontoProfesor(json) -> Profesor:
     profesor = Profesor(json['mail'], json['password'], json['name'])
     profesor.temas = json['temas']
     return profesor
+
+
+
 
 ############ CLASE BBDD ############
 
@@ -46,6 +50,7 @@ class DataBase:
                      "password": password,
                      "name": name,
                      "lastname":lastname,
+                     "image":"",
                      "vitrina": {"medallaOro": 0,
                                  "medallaPlata": 0,
                                  "medallaBronce": 0,
@@ -53,6 +58,15 @@ class DataBase:
                                  "recordInfinito": 0,
                                  "numPartidas": 0}}
         collection.insert_one(aInsertar)
+
+    def getAlumnoById(self,id) -> Alumno:
+        collection=self.db.Alumno
+        myquery={"_id":{"$eq":ObjectId(id)}}
+        lista = list(collection.find(myquery))
+        json_data = json.loads(dumps(lista))
+        if(len(json_data) == 0):
+            return None
+        return parseJsontoAlumno(json_data[0])
 
     def getAlumnoByMail(self, correo) -> Alumno:
         collection = self.db.Alumno
@@ -99,6 +113,16 @@ class DataBase:
         myquery = {"mail": {"$eq": mail}}
         updt = {"$set": {"password": contra}}
         collection.find_one_and_update(myquery, updt)
+
+
+
+    def updateProfileImage(self,id,image):
+        collection=self.db.Alumno
+        myquery={"_id":{"$eq":ObjectId(id)}}
+        updt={"$set":{"image": image}}
+        collection.find_one_and_update(myquery,updt)
+
+
 
     def deleteAlumno(self, alumno):
         collection = self.db.Alumno

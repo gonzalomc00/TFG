@@ -3,13 +3,15 @@ from modelo.vitrina import Vitrina
 
 class Alumno:
 
-    def __init__(self,id,correo,contrasena,nombre,lastname):
+    def __init__(self,id,correo,contrasena,nombre,lastname,image):
         self._id=id
         self.mail = correo
         self.password = contrasena
         self.name = nombre
         self.lastname=lastname
+        self.image=image
         self.vitrina = Vitrina()
+
 
     def setVitrina(self, vitrin):
         self.vitrina = vitrin

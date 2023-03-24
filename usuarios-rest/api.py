@@ -3,11 +3,12 @@ import os
 from pprint import pprint
 import random
 import json
-from flask import Flask, Response, flash, redirect, request, jsonify, url_for
+from flask import Flask, Response, flash, redirect, request, jsonify, send_file, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from mail import enviarCorreoRegistro, enviarCorreoPassword
 from modelo.alumno import Alumno
 import base64
+import uuid as uuid;
 
 
 
@@ -61,6 +62,8 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+
+
 #################### COMIENZO API ####################
 
 @app.route("/")
@@ -81,10 +84,11 @@ def login():
     if(alumno != None):
         contenido = {
             "alumno": True,
-            "_id": alumno._id,
+            "_id": str(alumno._id['$oid']),
             "nombre": alumno.name,
             "lastname":alumno.lastname,
             "correo": alumno.mail,
+            "image":alumno.image,
             "vitrina": {
                 "medallaOro" : alumno.vitrina.medallaOro,
                 "medallaPlata" : alumno.vitrina.medallaPlata,
@@ -403,7 +407,6 @@ def getusersTop():
 @app.route("/usuarios/<id>", methods=['POST'])
 def uploadFotoPerfil(id):
 
-    print(jon)
     if 'files' not in request.files:
         flash('No file part')
         return Response(status=400)
@@ -416,8 +419,30 @@ def uploadFotoPerfil(id):
     
     if file and allowed_file(file.filename):
         filename=secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-        return Response(status=200)
+        #Evitamos nombres repetidos
+        nombre_archivo= str(uuid.uuid1())+"_"+filename
+
+        #Eliminamos la foto antigua, para ello obtenemos su nombre primero 
+        alumno= baseDatos.getAlumnoById(id)
+        if(alumno.image!=""):
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'],alumno.image))
+        
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'],nombre_archivo))
+        baseDatos.updateProfileImage(id,nombre_archivo)
+        contenido = {
+        
+        "image" : nombre_archivo,
+        }
+        response = jsonify(contenido)
+        response.status_code = 200
+        return response
+    
+    
+@app.route('/imagen/<filename>')
+def imagenRequest(filename):
+    print("eo")
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename, as_attachment=True)
 
 if __name__ == '__main__':
     from waitress import serve
