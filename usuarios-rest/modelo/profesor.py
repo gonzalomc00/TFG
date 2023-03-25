@@ -1,19 +1,12 @@
-class Profesor:
+from modelo.user import User
 
-    def __init__(self,correo,contrasena,nombre):
-        self.mail = correo
-        self.password = contrasena
-        self.name = nombre
-        self.alumnos = []
-        self.temas = {
-            "UK General knowledge" : False,
-            "UK Geography" : False,
-            "UK History" : False,
-            "UK Society" : False,
-            "UK Mix" : False,
-            "USA General knowledge" : False,
-            "USA Geography" : False,
-            "USA History" : False,
-            "USA Society" : False,
-            "USA Mix" : False
-        }
+class Profesor(User):
+
+    def __init__(self,id,correo,contrasena,nombre,lastname,image,temas,vitrina):
+        super().__init__(id,correo,contrasena,nombre,lastname,image,"Teacher",vitrina)
+        self.temas = temas
+
+    def to_dict(self):
+        data = super().to_dict()
+        data["temas"] = self.temas
+        return data

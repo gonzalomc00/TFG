@@ -5,31 +5,20 @@ from bson.json_util import dumps
 from pymongo import MongoClient
 from modelo.alumno import Alumno
 from modelo.profesor import Profesor
+from modelo.user import User
 from modelo.vitrina import Vitrina
 from mail import enviarCorreoLogroToProfesor, enviarCorreoLogroToAlumno
 
 ############ FUNCIONES AUXILIARES ############
 
-
-def parseJsontoAlumno(json) -> Alumno:
-    alumno = Alumno(json['_id'],json['mail'], json['password'], json['name'],json['lastname'],json['image'])
-    vitrinaJson = json['vitrina']
-    nuevoVitrina = Vitrina()
-    nuevoVitrina.setMedallaOro(vitrinaJson['medallaOro'])
-    nuevoVitrina.setMedallaPlata(vitrinaJson['medallaPlata'])
-    nuevoVitrina.setMedallaBronce(vitrinaJson['medallaBronce'])
-    nuevoVitrina.setTrofeo(vitrinaJson['trofeo'])
-    nuevoVitrina.setRecordInfinito(vitrinaJson['recordInfinito'])
-    nuevoVitrina.setNumPartidas(vitrinaJson['numPartidas'])
-    alumno.setVitrina(nuevoVitrina)
-    return alumno
-
-
-def parseJsontoProfesor(json) -> Profesor:
-    profesor = Profesor(json['mail'], json['password'], json['name'])
-    profesor.temas = json['temas']
-    return profesor
-
+def parseJsontoUser(json) -> User:
+    if(json['rol']=='Student'):
+        user=Alumno(json['_id'],json['mail'], json['password'], json['name'],json['lastname'],json['image'],json['vitrina'])
+    else:
+        user=Profesor(json['_id'],json['mail'], json['password'], json['name'],json['lastname'],json['image'],json['temas'],json['vitrina'])
+    
+    
+    return user
 
 
 
@@ -43,14 +32,17 @@ class DataBase:
         # connect db
         #self.db = conn.Juego
         self.db = conn.test
+        self.collection=self.db.User
+        
 
     def registrarAlumno(self, mail, password, name,lastname):
-        collection = self.db.Alumno
+        collection = self.db.User
         aInsertar = {"mail": mail,
                      "password": password,
                      "name": name,
                      "lastname":lastname,
                      "image":"",
+                     "rol": "Student",
                      "vitrina": {"medallaOro": 0,
                                  "medallaPlata": 0,
                                  "medallaBronce": 0,
@@ -59,92 +51,76 @@ class DataBase:
                                  "numPartidas": 0}}
         collection.insert_one(aInsertar)
 
-    def getAlumnoById(self,id) -> Alumno:
-        collection=self.db.Alumno
+    def getUserById(self,id) -> Alumno:
         myquery={"_id":{"$eq":ObjectId(id)}}
-        lista = list(collection.find(myquery))
+        lista = list(self.collection.find(myquery))
         json_data = json.loads(dumps(lista))
         if(len(json_data) == 0):
             return None
-        return parseJsontoAlumno(json_data[0])
+        return parseJsontoUser(json_data[0])
 
-    def getAlumnoByMail(self, correo) -> Alumno:
-        collection = self.db.Alumno
+    def getUserByMail(self, correo) -> Alumno:
         myquery = {"mail": {"$eq": correo}}
-        lista = list(collection.find(myquery))
+        lista = list(self.collection.find(myquery))
         json_data = json.loads(dumps(lista))
         if(len(json_data) == 0):
             return None
-        return parseJsontoAlumno(json_data[0])
+        return parseJsontoUser(json_data[0])
 
-    def getAllAlumnos(self):
+
+    def getAllUsers(self):
         toReturn = []
-        collection = self.db.Alumno
-        lista = list(collection.find())
+        lista = list(self.collection.find())
         json_data = dumps(lista)
         for objeto in json.loads(json_data):
-            toReturn.append(parseJsontoAlumno(objeto))
+            toReturn.append(parseJsontoUser(objeto))
+        return toReturn
+    
+    def getAllAlumnos(self):
+        toReturn = []
+        myquery = {"rol": {"$eq": "alumno"}}
+        lista = list(self.collection.find(myquery))
+        json_data = dumps(lista)
+        for objeto in json.loads(json_data):
+            toReturn.append(parseJsontoUser(objeto))
         return toReturn
 
     def getAllProfesores(self):
         toReturn = []
-        collection = self.db.Profesor
-        lista = list(collection.find())
+        myquery = {"rol": {"$eq": "profesor"}}
+        lista = list(self.collection.find(myquery))
         json_data = dumps(lista)
         for objeto in json.loads(json_data):
             toReturn.append(objeto)
         return toReturn
 
-    def getProfesorByMail(self, correo) -> Profesor:
-               
-        collection = self.db.Profesor
-        
-        myquery = {"mail": {"$eq": correo}}
-        lista = list(collection.find(myquery))
-       
-        json_data = json.loads(dumps(lista))
-        
-        if(len(json_data) == 0):
-            return None
-        return parseJsontoProfesor(json_data[0])
 
     def updatePassword(self, mail, contra):
-        collection = self.db.Alumno
         myquery = {"mail": {"$eq": mail}}
         updt = {"$set": {"password": contra}}
-        collection.find_one_and_update(myquery, updt)
+        self.collection.find_one_and_update(myquery, updt)
 
 
 
     def updateProfileImage(self,id,image):
-        collection=self.db.Alumno
         myquery={"_id":{"$eq":ObjectId(id)}}
         updt={"$set":{"image": image}}
-        collection.find_one_and_update(myquery,updt)
+        self.collection.find_one_and_update(myquery,updt)
 
 
 
-    def deleteAlumno(self, alumno):
-        collection = self.db.Alumno
-        myquery = {"mail": {"$eq": alumno}}
-        collection.find_one_and_delete(myquery)
+    def deleteUser(self, user):
+        myquery = {"mail": {"$eq": user}}
+        self.collection.find_one_and_delete(myquery)
 
     def cambiarPreguntas(self, mail, preguntas):
-        collection = self.db.Profesor
         myquery = {"mail": {"$eq": mail}}
         updt = {"$set": {"temas": preguntas}}
-        collection.find_one_and_update(myquery, updt)
+        self.collection.find_one_and_update(myquery, updt)
 
     def aluToProf(self, mail):
-        datos = self.getAlumnoByMail(mail)
-        if(datos == None):
-            return False
-        self.deleteAlumno(mail)
-        collection = self.db.Profesor
-        aInsertar = {"mail": mail,
-                     "password": datos.password,
-                     "name": datos.name,
-                     "temas": {
+       myquery = {"mail": {"$eq": mail}}
+       updt={"$set":{"rol":"Teacher","temas": {
                          "UK General knowledge": False,
                          "UK Geography": False,
                          "UK History": False,
@@ -155,56 +131,51 @@ class DataBase:
                          "USA History": False,
                          "USA Society": False,
                          "USA Mix": False
-                     }
-                     }
-        collection.insert_one(aInsertar)
-        return True
+                     }}}
+       
+       self.collection.find_one_and_update(myquery, updt)
+       return True
+       
 
     def addTrofeo(self,mail,trofeo,profesores):
-        alumno = self.getAlumnoByMail(mail)
+        user = self.getUserByMail(mail)
         
-        v = alumno.getVitrinaJson()
+        v = user.getVitrinaJson()
         self.comprobacionLogros(v, trofeo, mail, profesores)
 
-        alumno.addTrofeo(trofeo)
+        user.addTrofeo(trofeo)
 
-        v2 = alumno.getVitrinaJson()
-
-        collection = self.db.Alumno
+        v2 = user.getVitrinaJson()
         myquery = {"mail": {"$eq": mail}}
         updt = {"$set": {"vitrina": v2}}
-        collection.find_one_and_update(myquery, updt)
+        self.collection.find_one_and_update(myquery, updt)
     
     def getTopMedallas(self):
-        collection = self.db.Alumno
-        return collection.find({},{"name":1,"vitrina.medallaOro":1,"_id":0}).sort("vitrina.medallaOro",-1).limit(5)
+        return self.collection.find({},{"name":1,"vitrina.medallaOro":1,"_id":0}).sort("vitrina.medallaOro",-1).limit(5)
 
     def getTopTrofeos(self):
-        collection = self.db.Alumno
-        return collection.find({},{"name":1,"vitrina.trofeo":1,"_id":0}).sort("vitrina.trofeo",-1).limit(5)
+        return self.collection.find({},{"name":1,"vitrina.trofeo":1,"_id":0}).sort("vitrina.trofeo",-1).limit(5)
     
     def getTopInfinites(self):
-        collection = self.db.Alumno
-        return collection.find({},{"name":1,"vitrina.recordInfinito":1,"_id":0}).sort("vitrina.recordInfinito",-1).limit(5)
+        return self.collection.find({},{"name":1,"vitrina.recordInfinito":1,"_id":0}).sort("vitrina.recordInfinito",-1).limit(5)
 
     def getStatsUser(self, mail):
         toReturn = [0,0,0]
-        collection = self.db.Alumno
-        infinite = list(collection.find({},{"name":1,"mail":1,"vitrina.recordInfinito":1,"_id":0}).sort("vitrina.recordInfinito",-1))
+        infinite = list(self.collection.find({},{"name":1,"mail":1,"vitrina.recordInfinito":1,"_id":0}).sort("vitrina.recordInfinito",-1))
         cont = 0
         for i in infinite:
             cont+=1
             if i.get('mail') == mail:
                 toReturn[0] = {"mail":mail,"name": i.get('name'), "vitrina": {"recordInfinito": i.get('vitrina').get('recordInfinito')},"ind": cont}
         
-        trof = list(collection.find({},{"name":1,"mail":1,"vitrina.trofeo":1,"_id":0}).sort("vitrina.trofeo",-1))
+        trof = list(self.collection.find({},{"name":1,"mail":1,"vitrina.trofeo":1,"_id":0}).sort("vitrina.trofeo",-1))
         cont = 0
         for i in trof:
             cont+=1
             if i.get('mail') == mail:
                 toReturn[1] = {"mail":mail,"name": i.get('name'), "vitrina": {"trofeo": i.get('vitrina').get('trofeo')},"ind": cont}
 
-        medal = list(collection.find({},{"name":1,"mail":1,"vitrina.medallaOro":1,"_id":0}).sort("vitrina.medallaOro",-1))
+        medal = list(self.collection.find({},{"name":1,"mail":1,"vitrina.medallaOro":1,"_id":0}).sort("vitrina.medallaOro",-1))
         cont = 0
         for i in medal:
             cont+=1

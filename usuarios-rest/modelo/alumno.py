@@ -1,38 +1,15 @@
+
 from modelo.vitrina import Vitrina
+from modelo.user import User
 
+class Alumno(User):
 
-class Alumno:
-
-    def __init__(self,id,correo,contrasena,nombre,lastname,image):
-        self._id=id
-        self.mail = correo
-        self.password = contrasena
-        self.name = nombre
-        self.lastname=lastname
-        self.image=image
-        self.vitrina = Vitrina()
-
-
-    def setVitrina(self, vitrin):
-        self.vitrina = vitrin
-
-    def addTrofeo(self, trofeo):
-        if(trofeo == "medallaOro"): self.vitrina.medallaOro +=1
-        elif(trofeo == "medallaPlata"): self.vitrina.medallaPlata +=1
-        elif(trofeo == "medallaBronce"): self.vitrina.medallaBronce +=1
-        elif(trofeo == "trofeo"): self.vitrina.trofeo +=1
-        elif(self.vitrina.recordInfinito < trofeo): self.vitrina.recordInfinito = trofeo
-        self.vitrina.numPartidas +=1
-
-    def getVitrinaJson(self):
-        return {
-            "medallaOro": self.vitrina.medallaOro,
-            "medallaPlata": self.vitrina.medallaPlata,
-            "medallaBronce": self.vitrina.medallaBronce,
-            "trofeo": self.vitrina.trofeo,
-            "recordInfinito": self.vitrina.recordInfinito,
-            "numPartidas": self.vitrina.numPartidas
-        }
+    def __init__(self,id,correo,contrasena,nombre,lastname,image,vitrina):
+        super().__init__(id,correo,contrasena,nombre,lastname,image,"Student",vitrina)
     
+    def to_dict(self):
+        data = super().to_dict()
+        return data
+
     
 

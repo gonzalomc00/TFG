@@ -42,20 +42,12 @@ def after_request(response):
 
 #################### FUNCIONES AUXILIARES ####################
 
-def comprobarLoginAlumno(correo, contrasena) -> Alumno:
-    alumno = baseDatos.getAlumnoByMail(correo)
-    if(alumno != None and alumno.password == contrasena):
-        return alumno
+def comprobarLogin(correo, contrasena) -> Alumno:
+    user = baseDatos.getUserByMail(correo)
+    if(user != None and user.password == contrasena):
+        return user
     return None
 
-def comprobarLoginProfesor(correo, contrasena) -> Alumno:
-    profesor = baseDatos.getProfesorByMail(correo)
-    print(profesor);
-  
-   
-    if(profesor != None and profesor.password == contrasena):
-        return profesor
-    return None
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -80,34 +72,9 @@ def login():
     #password = base64.b64decode(jon["contrasena"]).__str__()[2:-1]
     #print(password)
     password = jon["contrasena"]
-    alumno = comprobarLoginAlumno(mail,password)
-    if(alumno != None):
-        contenido = {
-            "alumno": True,
-            "_id": str(alumno._id['$oid']),
-            "nombre": alumno.name,
-            "lastname":alumno.lastname,
-            "correo": alumno.mail,
-            "image":alumno.image,
-            "vitrina": {
-                "medallaOro" : alumno.vitrina.medallaOro,
-                "medallaPlata" : alumno.vitrina.medallaPlata,
-                "medallaBronce" : alumno.vitrina.medallaBronce,
-                "trofeo" : alumno.vitrina.trofeo,
-                "recordInfinito" : alumno.vitrina.recordInfinito,
-                "numPartidas" : alumno.vitrina.numPartidas
-            }
-        }
-        response = jsonify(contenido)
-        response.status_code = 200
-        return response
-    profesor = comprobarLoginProfesor(mail,password)
-    if(profesor != None):
-        contenido = {
-            "alumno": False,
-            "nombre": profesor.name,
-            "correo": profesor.mail
-        }
+    user = comprobarLogin(mail,password)
+    if user != None:
+        contenido=user.to_dict()
         response = jsonify(contenido)
         response.status_code = 200
         return response
@@ -118,8 +85,8 @@ def login():
 def comprobarRegistro(correo):
     if(not correo.endswith("@um.es")):
       return Response(status=404)
-    for alumno in baseDatos.getAllAlumnos():
-        if(alumno.mail == correo):
+    for user in baseDatos.getAllUsers():
+        if(user.mail == correo):
             return Response(status=404)
     return Response(status=200)
 
@@ -181,7 +148,7 @@ def sendMail():
 def sendMailContrasena():
     destinatario = request.form.get("mail")
     contrasena = request.form.get("password")
-    if(comprobarLoginAlumno(destinatario, contrasena) == None):
+    if(comprobarLogin(destinatario, contrasena) == None):
         contenido = {
       "resultado": "ERROR",
       "mensaje": "The password or mail was incorrect"
@@ -258,7 +225,7 @@ def getAllAlumnos():
 def rmvAlumno():
     jon = json.loads(request.data)
     mailA = jon["mailAlumno"]
-    baseDatos.deleteAlumno(mailA)
+    baseDatos.deleteUser(mailA)
     contenido = {
         "resultado" : "OK"
     }
@@ -284,7 +251,7 @@ def cambioTemas():
 def getTemas():
     jon = json.loads(request.data)
     mail = jon["mail"]
-    profesor = baseDatos.getProfesorByMail(mail)
+    profesor = baseDatos.getUserByMail(mail)
     contenido = {
         "resultado" : "OK",
         "temas" : profesor.temas
@@ -317,7 +284,7 @@ def getAllTemas():
     toReturn = []
     profesores = baseDatos.getAllProfesores()
     for p in profesores:
-        profesor = baseDatos.getProfesorByMail(p["mail"])
+        profesor = baseDatos.getUserByMail(p["mail"])
         temas = profesor.temas
         for t in temas:
             if(temas.get(t) and not toReturn.__contains__(t)):
@@ -336,7 +303,7 @@ def addTrophy():
     mail = jon["mail"]
     trofeo = jon["trofeo"]
 
-    alumno = baseDatos.getAlumnoByMail(mail)
+    alumno = baseDatos.getUserByMail(mail)
     v = alumno.getVitrinaJson()
 
     flag = not (type(trofeo) == str)
@@ -423,9 +390,9 @@ def uploadFotoPerfil(id):
         nombre_archivo= str(uuid.uuid1())+"_"+filename
 
         #Eliminamos la foto antigua, para ello obtenemos su nombre primero 
-        alumno= baseDatos.getAlumnoById(id)
-        if(alumno.image!=""):
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'],alumno.image))
+        user= baseDatos.getUserById(id)
+        if(user.image!=""):
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'],user.image))
         
         file.save(os.path.join(app.config['UPLOAD_FOLDER'],nombre_archivo))
         baseDatos.updateProfileImage(id,nombre_archivo)
