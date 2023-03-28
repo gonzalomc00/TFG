@@ -202,22 +202,15 @@ def cambioContrasena():
     return response
 
 @app.route("/usuarios", methods=['GET'])
-def getAllAlumnos():
-    lista = baseDatos.getAllAlumnos()
+def getAllUser():
+    lista = baseDatos.getAllUsers()
     listaJson = []
-    for alumno in lista:
-        doc = {
-            "name" : alumno.name,
-            "mail" : alumno.mail,
-            "vitrina" : alumno.getVitrinaJson()
-        }
+    for user in lista:
+        doc = user.to_dict()
         listaJson.append(doc)
 
-    contenido = {
-        "resultado" : "OK",
-        "lista" : listaJson
-    }
-    response = jsonify(contenido)
+    
+    response = jsonify(listaJson)
     response.status_code = 200
     return response
 

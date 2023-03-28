@@ -17,7 +17,6 @@ def parseJsontoUser(json) -> User:
     else:
         user=Profesor(json['_id'],json['mail'], json['password'], json['name'],json['lastname'],json['image'],json['temas'],json['vitrina'])
     
-    
     return user
 
 
@@ -71,7 +70,7 @@ class DataBase:
     def getAllUsers(self):
         toReturn = []
         lista = list(self.collection.find())
-        json_data = dumps(lista)
+        json_data = dumps(lista, default=lambda o: str(o))
         for objeto in json.loads(json_data):
             toReturn.append(parseJsontoUser(objeto))
         return toReturn
