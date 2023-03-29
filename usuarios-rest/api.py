@@ -201,6 +201,16 @@ def cambioContrasena():
     response.status_code = 200
     return response
 
+
+@app.route("/usuarios/<id>", methods=['GET'])
+def getUser(id):
+    user=baseDatos.getUserById(id)
+    contenido=user.to_dict()
+    response=jsonify(contenido)
+    response.status_code=200
+    return response
+
+
 @app.route("/usuarios", methods=['GET'])
 def getAllUser():
     lista = baseDatos.getAllUsers()
@@ -214,17 +224,22 @@ def getAllUser():
     response.status_code = 200
     return response
 
-@app.route("/usuarios/rmvAlumno", methods=['POST'])
-def rmvAlumno():
-    jon = json.loads(request.data)
-    mailA = jon["mailAlumno"]
-    baseDatos.deleteUser(mailA)
-    contenido = {
-        "resultado" : "OK"
-    }
-    response = jsonify(contenido)
-    response.status_code = 200
+@app.route("/usuarios/alumnos",methods=['GET'])
+def getAllAlumnos():
+    lista=baseDatos.getAllAlumnos()
+    listaJson=[]
+    for alumno in lista: 
+        doc=alumno.to_dict()
+        listaJson.append(doc)
+
+    response=jsonify(listaJson)
+    response.status_code=200
     return response
+
+@app.route("/usuarios/<id>", methods=['DELETE'])
+def rmvAlumno(id):
+    baseDatos.deleteUser(id)
+    return Response(status=200)
 
 @app.route("/usuarios/chngTemas", methods=['POST'])
 def cambioTemas():
@@ -253,24 +268,13 @@ def getTemas():
     response.status_code = 200
     return response
 
-@app.route("/usuarios/aluToProf", methods=['POST'])
+@app.route("/usuarios/aluToProf", methods=['PUT'])
 def aluToProf():
     jon = json.loads(request.data)
-    mail = jon["mail"]
-    if(baseDatos.aluToProf(mail)):
-        contenido = {
-            "resultado" : "OK"
-        }
-        response = jsonify(contenido)
-        response.status_code = 200
-        return response
-    else:
-        contenido = {
-            "resultado" : "ERROR"
-        }
-        response = jsonify(contenido)
-        response.status_code = 400
-        return response
+    mail = jon["correo"]
+    baseDatos.aluToProf(mail)
+    return Response(status=200)
+
 
 @app.route("/usuarios/temasDisponibles", methods=['GET'])
 def getAllTemas():

@@ -77,7 +77,7 @@ class DataBase:
     
     def getAllAlumnos(self):
         toReturn = []
-        myquery = {"rol": {"$eq": "alumno"}}
+        myquery = {"rol": {"$eq": "Student"}}
         lista = list(self.collection.find(myquery))
         json_data = dumps(lista)
         for objeto in json.loads(json_data):
@@ -86,7 +86,7 @@ class DataBase:
 
     def getAllProfesores(self):
         toReturn = []
-        myquery = {"rol": {"$eq": "profesor"}}
+        myquery = {"rol": {"$eq": "Teacher"}}
         lista = list(self.collection.find(myquery))
         json_data = dumps(lista)
         for objeto in json.loads(json_data):
@@ -108,8 +108,8 @@ class DataBase:
 
 
 
-    def deleteUser(self, user):
-        myquery = {"mail": {"$eq": user}}
+    def deleteUser(self, id):
+        myquery = {"_id": {"$eq": ObjectId(id)}}
         self.collection.find_one_and_delete(myquery)
 
     def cambiarPreguntas(self, mail, preguntas):
@@ -133,7 +133,6 @@ class DataBase:
                      }}}
        
        self.collection.find_one_and_update(myquery, updt)
-       return True
        
 
     def addTrofeo(self,mail,trofeo,profesores):
