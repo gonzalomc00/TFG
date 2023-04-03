@@ -15,21 +15,24 @@ class DataBase:
         #conn = MongoClient("localhost",27017)
         # connect db
         self.db = conn.test
+        self.collection=self.db.Pregunta
 
-    def registrarPregunta(self,enunciado, solucion, categoria, image) :
-        collection = self.db.Pregunta
+    def registrarPregunta(self,enunciado, solucion,pais, categoria,informacion) :
+   
         aInsertar = {
             "enunciado":enunciado,
             "solucion":solucion,
+            "pais":pais,
             "categoria":categoria,
-            "image": image
+            "informacion":informacion
+     
         }
-        result = collection.insert_one(aInsertar)
+        result = self.collection.insert_one(aInsertar)
         return result.inserted_id
 
     def getPreguntaById(self, id) -> json:
-        collection = self.db.Pregunta
-        jd = collection.find_one({ "_id": ObjectId(id) })
+
+        jd = self.collection.find_one({ "_id": ObjectId(id) })
         json_data = json.loads(dumps(jd))
         if(len(json_data)==0):
             return None
@@ -37,35 +40,30 @@ class DataBase:
     
     def getAllPreguntas(self):
         toReturn = []
-        collection = self.db.Pregunta
-        lista = list(collection.find())
+        lista = list(self.collection.find())
         json_data = dumps(lista)
         for objeto in json.loads(json_data):
             toReturn.append(objeto)
         return toReturn
 
     def removeById(self, id):
-        collection = self.db.Pregunta
-        myquery = { "_id": { "$eq": id } }
-        collection.find_one_and_delete(myquery)
+        myquery = { "_id": { "$eq": ObjectId(id) } }
+        self.collection.find_one_and_delete(myquery)
 
     def updateById(self,id, pregunta):
-        collection = self.db.Pregunta
-        myquery = { "_id": { "$eq": id } }
-        collection.update_one(myquery, pregunta)
+        myquery = { "_id": { "$eq": ObjectId(id) } }
+        self.collection.update_one(myquery, pregunta)
 
-    def updateImagen(self, id, imagen):
-        p = self.getPreguntaById(id)
-        pre = Pregunta(p['enunciado'],p['solucion'],p['categoria'])
-        pre.setImagen(imagen)
-        self.updateById(id,p)
+    def updateImagen(self, id, image):
+        myquery={"_id":{"$eq":ObjectId(id)}}
+        updt={"$set":{"image": image}}
+        self.collection.find_one_and_update(myquery,updt)
 
     def getPreguntasPorCategorias(self, lista):
-        collection = self.db.Pregunta
         toReturn = []
         for i in lista:
             myquery = { "categoria": { "$eq": i } }
-            list = collection.find(myquery)
+            list = self.collection.find(myquery)
             for j in list:
                 toReturn.append(j)
         return toReturn

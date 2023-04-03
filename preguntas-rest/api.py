@@ -2,18 +2,26 @@ import base64
 import json
 from os import getcwd, remove
 import codecs
+import os
 import random
-from flask import Flask, Blueprint, request, jsonify
+import uuid
+from flask import Flask, Blueprint, Response, flash, request, jsonify, send_from_directory
+from werkzeug.utils import secure_filename
 from model.pregunta import Pregunta
 
 from bbdd import DataBase
 
+
+UPLOAD_FOLDER = getcwd() + '/images/'
+ALLOWED_EXTENSIONS={'jpg','jpeg','png'}
+
 app = Flask(__name__) #aquí creamos una nueva instancia del servidor Flask.
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 baseDatos = DataBase()
 
 routes_files = Blueprint("routes_files", __name__)
 
-PATH_FILE = getcwd() + '/images/'
+
 
 dicCategory = {
     1 : "UK General knowledge",
@@ -39,33 +47,56 @@ def after_request(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Credentials"] = "true"
     response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
-    response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+    response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization,enctype"
     return response
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def upload_foto(file,idPregunta):
+
+    if file.filename =='':
+        flash('No selected file')
+        return Response(status=400)
+    
+    if file and allowed_file(file.filename):
+        filename=secure_filename(file.filename)
+        #Evitamos nombres repetidos
+        nombre_archivo= str(uuid.uuid1())+"_"+filename
+
+        #Eliminamos la foto antigua, para ello obtenemos su nombre primero 
+        question= baseDatos.getPreguntaById(idPregunta)
+        if('image' in question.keys()):
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'],question.image))
+        
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'],nombre_archivo))
+        baseDatos.updateImagen(idPregunta,nombre_archivo)
+        return nombre_archivo
+
+
+
 
 #################### COMIENZO API ####################
 
-@app.route("/preguntas/register", methods=['POST']) 
+@app.route("/preguntas", methods=['POST']) 
 def register():
-    jon = json.loads(request.data)
-    enunciado = jon['question']
-    solucion = jon['response']
-    categoria = jon['category']
-    image = jon['image']
+    enunciado = request.form["question"]
+    solucion = request.form["answer"]
+    pais= request.form["country"]
+    categoria = request.form["topic"]
+    informacion=request.form.get('direccion', '')
+    
 
-    idPregunta = baseDatos.registrarPregunta(enunciado, solucion, categoria, image)
 
-    contenido = {
-        "resultado":"OK",
-        "id":idPregunta.__str__()
-    }
+    idPregunta = baseDatos.registrarPregunta(enunciado, solucion,pais, categoria,informacion)
+    if 'files' in request.files:
+        file= request.files['files']
+        upload_foto(file,idPregunta)
 
-    response = jsonify(contenido)
-    response.status_code = 200
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
-    response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
-    return response
+
+    return Response(status=200)
 
 @app.route("/preguntas/registerFile", methods=['POST']) 
 def register_from_file():
@@ -144,6 +175,35 @@ def getPreguntas():
     response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
     response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
     return response
+
+
+
+#ACTUALIZAR FOTOS
+@app.route("/preguntas/<id>", methods=['POST'])
+def uploadFotoPregunta(id):
+
+    if 'files' not in request.files:
+        flash('No file part')
+        return Response(status=400)
+    
+    file= request.files['files']
+    
+    
+    nombre_archivo= upload_foto(file)
+    contenido = {
+        
+        "image" : nombre_archivo,
+    }
+    response = jsonify(contenido)
+    response.status_code = 200
+    return response
+    
+    
+@app.route('/imagen/<filename>')
+def imagenRequest(filename):
+    print("eo")
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename, as_attachment=True)
 
 if __name__ == '__main__':
     from waitress import serve

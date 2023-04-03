@@ -3,7 +3,7 @@ import os
 from pprint import pprint
 import random
 import json
-from flask import Flask, Response, flash, redirect, request, jsonify, send_file, url_for, send_from_directory
+from flask import Flask, Response, flash, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 from mail import enviarCorreoRegistro, enviarCorreoPassword
 from modelo.alumno import Alumno
