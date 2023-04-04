@@ -68,8 +68,8 @@ def upload_foto(file,idPregunta):
 
         #Eliminamos la foto antigua, para ello obtenemos su nombre primero 
         question= baseDatos.getPreguntaById(idPregunta)
-        if('image' in question.keys()):
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'],question.image))
+        if(question['image'] != ""):
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'],question['image']))
         
         file.save(os.path.join(app.config['UPLOAD_FOLDER'],nombre_archivo))
         baseDatos.updateImagen(idPregunta,nombre_archivo)
@@ -86,7 +86,7 @@ def register():
     solucion = request.form["answer"]
     pais= request.form["country"]
     categoria = request.form["topic"]
-    informacion=request.form.get('direccion', '')
+    informacion=request.form.get('information', '')
     
 
 
@@ -157,24 +157,16 @@ def getPregunta():
 @app.route("/preguntas", methods=['GET']) 
 def getPreguntas():
 
-    preguntas = list(baseDatos.getAllPreguntas())
+    preguntas = baseDatos.getAllPreguntas()
+    listaJson=[]
+    for pregunta in preguntas:
+        doc= pregunta.to_dict()
+        listaJson.append(doc)
 
-    for p in preguntas:
-        if p['image'] == "null":
-            p['image'] = False
-
-    contenido = {
-        "resultado":"OK",
-        "questions" : json.dumps(preguntas)
-    }
-
-    response = jsonify(contenido)
-    response.status_code = 200
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
-    response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+    response=jsonify(listaJson)
+    response.status_code =200
     return response
+
 
 
 

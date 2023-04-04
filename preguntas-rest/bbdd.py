@@ -7,6 +7,12 @@ from model.pregunta import Pregunta
 
 ############ FUNCIONES AUXILIARES ############
 
+def parteJsonToPregunta(json) ->Pregunta:
+    pregunta=Pregunta(json['_id'],json['enunciado'], json['solucion'], json['pais'],json['categoria'],json['informacion'],json['image'])
+    return pregunta
+
+
+
 ############ CLASE BBDD ############
 class DataBase:
     def __init__(self) -> None:
@@ -24,6 +30,7 @@ class DataBase:
             "solucion":solucion,
             "pais":pais,
             "categoria":categoria,
+            "image":"",
             "informacion":informacion
      
         }
@@ -43,7 +50,7 @@ class DataBase:
         lista = list(self.collection.find())
         json_data = dumps(lista)
         for objeto in json.loads(json_data):
-            toReturn.append(objeto)
+            toReturn.append(parteJsonToPregunta(objeto))
         return toReturn
 
     def removeById(self, id):
