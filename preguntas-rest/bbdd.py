@@ -74,3 +74,17 @@ class DataBase:
             for j in list:
                 toReturn.append(j)
         return toReturn
+    
+    def deletePregunta(self,id):
+        myquery = {"_id": {"$eq": ObjectId(id)}}
+        self.collection.find_one_and_delete(myquery)
+
+    def editarPregunta(self,id,enunciado,solucion,pais,categoria,informacion):
+        myquery = {"_id": {"$eq": ObjectId(id)}}
+        updt={"$set":{"enunciado":enunciado,
+                      "solucion":solucion,
+                      "pais":pais,
+                      "categoria":categoria,
+                      "informacion":informacion}}
+       
+        self.collection.find_one_and_update(myquery, updt)

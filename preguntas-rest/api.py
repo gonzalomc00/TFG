@@ -13,7 +13,7 @@ from bbdd import DataBase
 
 
 UPLOAD_FOLDER = getcwd() + '/images/'
-ALLOWED_EXTENSIONS={'jpg','jpeg','png'}
+ALLOWED_EXTENSIONS={'jpg','jpeg','png','webp'}
 
 app = Flask(__name__) #aquí creamos una nueva instancia del servidor Flask.
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -168,6 +168,27 @@ def getPreguntas():
     return response
 
 
+@app.route("/preguntas/<id>", methods=['DELETE'])
+def deletePregunta(id):
+    baseDatos.deletePregunta(id)
+    return Response(status=200)
+
+@app.route("/preguntas/<id>",methods=['PUT'])
+def editPregunta(id):
+
+    enunciado = request.form["question"]
+    solucion = request.form["answer"]
+    pais= request.form["country"]
+    categoria = request.form["topic"]
+    informacion=request.form.get('information', '')
+    if 'files' in request.files:
+        file= request.files['files']
+        image=upload_foto(file,id)
+
+    baseDatos.editarPregunta(id,enunciado,solucion,pais,categoria,informacion)
+
+
+    return Response(status=200)
 
 
 #ACTUALIZAR FOTOS
