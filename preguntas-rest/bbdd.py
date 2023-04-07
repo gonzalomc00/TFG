@@ -120,3 +120,13 @@ class DataBase:
                      "USA":USA}}
        
        self.db.Temas.update_one({},updt)
+
+    def crearJuego(self,nombre,preguntas,code):
+        aInsertar={
+            "nombre": nombre,
+            "preguntas": preguntas,
+            "code":code,
+            "status":"Open"
+        }
+
+        result = self.db.Juegos.insert_one(aInsertar)

@@ -214,6 +214,16 @@ def updateTemas():
     baseDatos.updateTemas(UK,USA)
     return Response(status=200)
 
+@app.route("/games",methods=['POST'])
+def crearGame():
+    jon = json.loads(request.data)
+    nombre = jon["nombre"]
+    preguntas = jon["preguntas"]
+    foo = random.SystemRandom()
+    code = foo.randint(10000,100000)
+    baseDatos.crearJuego(nombre,preguntas,code)
+    return Response(status=200)
+
 #ACTUALIZAR FOTOS
 @app.route("/preguntas/<id>", methods=['POST'])
 def uploadFotoPregunta(id):
