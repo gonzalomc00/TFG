@@ -6,7 +6,7 @@ import json
 from flask import Flask, Response, flash, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 from mail import enviarCorreoRegistro, enviarCorreoPassword
-from modelo.alumno import Alumno
+from modelo.user import User
 import base64
 import uuid as uuid;
 
@@ -42,7 +42,7 @@ def after_request(response):
 
 #################### FUNCIONES AUXILIARES ####################
 
-def comprobarLogin(correo, contrasena) -> Alumno:
+def comprobarLogin(correo, contrasena) -> User:
     user = baseDatos.getUserByMail(correo)
     if(user != None and user.password == contrasena):
         return user
@@ -241,19 +241,6 @@ def rmvAlumno(id):
     baseDatos.deleteUser(id)
     return Response(status=200)
 
-@app.route("/usuarios/chngTemas", methods=['POST'])
-def cambioTemas():
-    jon = json.loads(request.data)
-    mail = jon["mail"]
-    preguntas = jon["preguntas"]
-
-    baseDatos.cambiarPreguntas(mail, preguntas)
-    contenido = {
-        "resultado" : "OK"
-    }
-    response = jsonify(contenido)
-    response.status_code = 200
-    return response
 
 @app.route("/usuarios/getTemas", methods=['POST'])
 def getTemas():

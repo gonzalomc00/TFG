@@ -88,3 +88,35 @@ class DataBase:
                       "informacion":informacion}}
        
         self.collection.find_one_and_update(myquery, updt)
+
+    def crearTemas(self):
+        aInsertar = {
+            "UK":{
+            "Geography": False,
+            "History": False,
+            "Society": False,
+            "General Knowledge":False,
+            "Mix": False
+        },
+
+        "USA":{
+            "Geography": False,
+            "History": False,
+            "Society": False,
+            "General Knowledge":False,
+            "Mix": False
+        }
+     
+        }
+        result = self.db.Temas.insert_one(aInsertar)
+
+    def getTemas(self):
+        jd = self.db.Temas.find()
+        json_data = json.loads(dumps(jd))
+        return json_data[0]
+    
+    def updateTemas(self,UK,USA):
+       updt={"$set":{"UK":UK,
+                     "USA":USA}}
+       
+       self.db.Temas.update_one({},updt)

@@ -190,6 +190,29 @@ def editPregunta(id):
 
     return Response(status=200)
 
+@app.route("/temas",methods=['POST'])
+def crearTemas():
+    baseDatos.crearTemas()
+    return Response(status=200)
+
+@app.route("/temas",methods=['GET'])
+def getTemas():
+    contenido=baseDatos.getTemas()
+    contenido_response={
+        "UK": contenido['UK'],
+        "USA":contenido['USA']
+    }
+    response = jsonify(contenido_response)
+    response.status_code = 200
+    return response
+
+@app.route("/temas",methods=['PUT'])
+def updateTemas():
+    jon = json.loads(request.data)
+    UK = jon["UK"]
+    USA = jon["USA"]
+    baseDatos.updateTemas(UK,USA)
+    return Response(status=200)
 
 #ACTUALIZAR FOTOS
 @app.route("/preguntas/<id>", methods=['POST'])

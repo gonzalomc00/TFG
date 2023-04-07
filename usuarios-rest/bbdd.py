@@ -3,8 +3,6 @@ import urllib
 from bson import ObjectId
 from bson.json_util import dumps
 from pymongo import MongoClient
-from modelo.alumno import Alumno
-from modelo.profesor import Profesor
 from modelo.user import User
 from modelo.vitrina import Vitrina
 from mail import enviarCorreoLogroToProfesor, enviarCorreoLogroToAlumno
@@ -12,11 +10,8 @@ from mail import enviarCorreoLogroToProfesor, enviarCorreoLogroToAlumno
 ############ FUNCIONES AUXILIARES ############
 
 def parseJsontoUser(json) -> User:
-    if(json['rol']=='Student'):
-        user=Alumno(json['_id'],json['mail'], json['password'], json['name'],json['lastname'],json['image'],json['vitrina'])
-    else:
-        user=Profesor(json['_id'],json['mail'], json['password'], json['name'],json['lastname'],json['image'],json['temas'],json['vitrina'])
-    
+  
+    user=User(json['_id'],json['mail'], json['password'], json['name'],json['lastname'],json['image'],json['rol'],json['vitrina'])
     return user
 
 
@@ -50,7 +45,7 @@ class DataBase:
                                  "numPartidas": 0}}
         collection.insert_one(aInsertar)
 
-    def getUserById(self,id) -> Alumno:
+    def getUserById(self,id) -> User:
         myquery={"_id":{"$eq":ObjectId(id)}}
         lista = list(self.collection.find(myquery))
         json_data = json.loads(dumps(lista))
@@ -58,7 +53,7 @@ class DataBase:
             return None
         return parseJsontoUser(json_data[0])
 
-    def getUserByMail(self, correo) -> Alumno:
+    def getUserByMail(self, correo) -> User:
         myquery = {"mail": {"$eq": correo}}
         lista = list(self.collection.find(myquery))
         json_data = json.loads(dumps(lista))
@@ -119,18 +114,7 @@ class DataBase:
 
     def aluToProf(self, mail):
        myquery = {"mail": {"$eq": mail}}
-       updt={"$set":{"rol":"Teacher","temas": {
-                         "UK General knowledge": False,
-                         "UK Geography": False,
-                         "UK History": False,
-                         "UK Society": False,
-                         "UK Mix": False,
-                         "USA General knowledge": False,
-                         "USA Geography": False,
-                         "USA History": False,
-                         "USA Society": False,
-                         "USA Mix": False
-                     }}}
+       updt={"$set":{"rol":"Teacher"}}
        
        self.collection.find_one_and_update(myquery, updt)
        
