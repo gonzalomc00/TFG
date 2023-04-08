@@ -4,12 +4,17 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 
 from model.pregunta import Pregunta
+from model.juego import Juego
 
 ############ FUNCIONES AUXILIARES ############
 
 def parteJsonToPregunta(json) ->Pregunta:
     pregunta=Pregunta(json['_id'],json['enunciado'], json['solucion'], json['pais'],json['categoria'],json['informacion'],json['image'])
     return pregunta
+
+def parseJsonToGame(json) -> Juego:
+    juego =Juego(json['_id'],json['nombre'],json['code'],json['status'])
+    return juego
 
 
 
@@ -126,7 +131,46 @@ class DataBase:
             "nombre": nombre,
             "preguntas": preguntas,
             "code":code,
-            "status":"Open"
+            "status":"Opened"
         }
 
         result = self.db.Juegos.insert_one(aInsertar)
+
+    def getGameById(self,id):
+        jd = self.db.Juegos.find_one({ "_id": ObjectId(id) })
+        json_data = json.loads(dumps(jd))
+        if(len(json_data)==0):
+            return None
+        return json_data
+
+    def getGames(self):
+        toReturn = []
+        lista = list(self.db.Juegos.find())
+        json_data = dumps(lista)
+        for objeto in json.loads(json_data):
+            toReturn.append(parseJsonToGame(objeto))
+        return toReturn
+    
+    def updateGame(self,id,nombre,preguntas,status):
+        myquery = {"_id": {"$eq": ObjectId(id)}}
+        updt={"$set":{"nombre":nombre,
+                      "preguntas":preguntas,
+                      "status":status,}}
+       
+        self.db.Juegos.find_one_and_update(myquery, updt)
+
+    def deleteGame(self,id):
+        myquery = {"_id": {"$eq": ObjectId(id)}}
+        self.db.Juegos.find_one_and_delete(myquery)
+
+    def getQuestionsGame(self,id):
+        juego= self.getGameById(id)
+        objetos_ids = [ObjectId(id) for id in juego['preguntas']]
+        filtro = { "_id": { "$in": objetos_ids } }
+        lista = list(self.collection.find(filtro))
+        toReturn=[]
+        json_data = dumps(lista)
+        for objeto in json.loads(json_data):
+            toReturn.append(parteJsonToPregunta(objeto))
+        return toReturn
+    

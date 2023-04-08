@@ -224,6 +224,47 @@ def crearGame():
     baseDatos.crearJuego(nombre,preguntas,code)
     return Response(status=200)
 
+@app.route("/games",methods=['GET'])
+def getGames():
+    games=baseDatos.getGames()
+    listaJson=[]
+    for game in games:
+        doc= game.to_dict()
+        listaJson.append(doc)
+
+    response=jsonify(listaJson)
+    response.status_code =200
+    return response
+
+@app.route("/games",methods=['PUT'])
+def updateGame():
+    jon= json.loads(request.data)
+    id = jon["_id"]
+    nombre= jon["name"]
+    preguntas = jon["questions"]
+    status= jon["status"]
+    baseDatos.updateGame(id,nombre,preguntas,status)
+    return Response(status=200)
+
+@app.route("/games/<id>",methods=['DELETE'])
+def deleteGame(id):
+    baseDatos.deleteGame(id)
+    return Response(status=200)
+
+@app.route("/games/<id>/preguntas",methods=['GET'])
+def getPreguntasGame(id):
+    preguntas= baseDatos.getQuestionsGame(id)
+    listaJson=[]
+    for pregunta in preguntas:
+        doc= pregunta.to_dict()
+        listaJson.append(doc)
+
+    response=jsonify(listaJson)
+    response.status_code =200
+    return response
+
+
+
 #ACTUALIZAR FOTOS
 @app.route("/preguntas/<id>", methods=['POST'])
 def uploadFotoPregunta(id):
