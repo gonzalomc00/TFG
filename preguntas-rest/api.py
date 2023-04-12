@@ -263,6 +263,22 @@ def getPreguntasGame(id):
     response.status_code =200
     return response
 
+@app.route("/preguntas/singleplayer",methods=['GET'])
+def getPreguntasSinglePlayer():
+    pais = request.args.get('pais')
+    categoria = request.args.get('categoria')
+    print(pais +categoria)
+    preguntas= baseDatos.getQuestionsSinglePlayer(pais,categoria)
+    listaJson=[]
+    for pregunta in preguntas:
+        doc= pregunta.to_dict()
+        listaJson.append(doc)
+
+    response=jsonify(listaJson)
+    response.status_code =200
+    return response
+
+
 
 
 #ACTUALIZAR FOTOS

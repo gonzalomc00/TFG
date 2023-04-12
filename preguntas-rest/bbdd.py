@@ -174,3 +174,20 @@ class DataBase:
             toReturn.append(parteJsonToPregunta(objeto))
         return toReturn
     
+
+    def getQuestionsSinglePlayer(self,pais,categoria):
+        condicion1={"pais":pais}
+        condicion2={"categoria":categoria}
+
+        resultados= list(self.collection.aggregate([
+            {"$match": {"$and":[condicion1,condicion2]}},
+            {"$sample":{"size":10}}
+        ]))
+
+        toReturn=[]
+        json_data = dumps(resultados)
+        for objeto in json.loads(json_data):
+            toReturn.append(parteJsonToPregunta(objeto))
+        return toReturn
+
+    
