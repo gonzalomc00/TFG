@@ -27,6 +27,7 @@ class DataBase:
         # connect db
         self.db = conn.test
         self.collection=self.db.Pregunta
+      
 
     def registrarPregunta(self,enunciado, solucion,pais, categoria,informacion) :
    
@@ -189,5 +190,7 @@ class DataBase:
         for objeto in json.loads(json_data):
             toReturn.append(parteJsonToPregunta(objeto))
         return toReturn
+    
+
 
     

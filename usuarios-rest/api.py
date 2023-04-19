@@ -281,36 +281,6 @@ def getAllTemas():
     response.status_code = 200
     return response
 
-@app.route("/usuarios/addTrophy", methods=['POST'])
-def addTrophy():
-    jon = json.loads(request.data)
-    mail = jon["mail"]
-    trofeo = jon["trofeo"]
-
-    alumno = baseDatos.getUserByMail(mail)
-    v = alumno.getVitrinaJson()
-
-    flag = not (type(trofeo) == str)
-
-    if(trofeo == "null" or ( flag and int(trofeo) <v["recordInfinito"])):
-        contenido = {
-            "resultado" : "NADA"
-        }
-        response = jsonify(contenido)
-        response.status_code = 200
-        return response
-    else:
-        profesores = baseDatos.getAllProfesores()
-        prof=[]
-        for p in profesores:
-            prof.append(p["mail"])
-        baseDatos.addTrofeo(mail,trofeo,prof)
-        contenido = {
-            "resultado" : "OK"
-        }
-        response = jsonify(contenido)
-        response.status_code = 200
-        return response
 
 @app.route("/usuarios/top", methods=['GET','POST'])
 def getusersTop():
@@ -352,6 +322,36 @@ def getusersTop():
     response = jsonify(contenido)
     response.status_code = 200
     return response
+
+
+@app.route("/records",methods=['POST'])
+def saveGameRecord():
+    jon= json.loads(request.data)
+
+    resultado= jon['correctAnswers']
+    user= jon["userId"]
+    modo= jon['gameMode']
+    addTrophy(user,resultado,modo)
+    baseDatos.saveRegistroPartida(jon)
+
+    return Response(status=200)
+
+def addTrophy(userId,resultado,modo):
+
+    alumno=baseDatos.getUserById(userId)
+    v=alumno.vitrina
+    if(modo=='Single Player Mode'):
+        if(resultado<9 and resultado>=7):
+            v['medallaBronce']= v['medallaBronce'] +1
+
+        if(resultado==9):
+            v['medallaPlata']= v['medallaPlata'] +1
+        
+        if(resultado==10):
+            v['medallaOro']= v['medallaOro'] +1
+
+    baseDatos.actualizarVitrina(userId,v)
+
 
 
 #ACTUALIZAR FOTOS

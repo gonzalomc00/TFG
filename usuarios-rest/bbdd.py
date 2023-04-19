@@ -1,6 +1,7 @@
 import json
 import urllib
 from bson import ObjectId
+from datetime import datetime
 from bson.json_util import dumps
 from pymongo import MongoClient
 from modelo.user import User
@@ -27,6 +28,7 @@ class DataBase:
         #self.db = conn.Juego
         self.db = conn.test
         self.collection=self.db.User
+        self.collectionHistorial=self.db.Historia
         
 
     def registrarAlumno(self, mail, password, name,lastname):
@@ -119,17 +121,9 @@ class DataBase:
        self.collection.find_one_and_update(myquery, updt)
        
 
-    def addTrofeo(self,mail,trofeo,profesores):
-        user = self.getUserByMail(mail)
-        
-        v = user.getVitrinaJson()
-        self.comprobacionLogros(v, trofeo, mail, profesores)
-
-        user.addTrofeo(trofeo)
-
-        v2 = user.getVitrinaJson()
-        myquery = {"mail": {"$eq": mail}}
-        updt = {"$set": {"vitrina": v2}}
+    def actualizarVitrina(self,id,vitrina):
+        myquery = {"_id": {"$eq": ObjectId(id)}}
+        updt = {"$set": {"vitrina": vitrina}}
         self.collection.find_one_and_update(myquery, updt)
     
     def getTopMedallas(self):
@@ -255,3 +249,10 @@ class DataBase:
             for i in profesores:
                 enviarCorreoLogroToProfesor(mail,"Sussex's Duke",i)
             enviarCorreoLogroToAlumno(mail,"Sussex's Duke")
+
+
+    def saveRegistroPartida(self,datos):
+        current_date = datetime.now()
+        datos["fecha"] = current_date
+        self.collectionHistorial.insert_one(datos)
+        
