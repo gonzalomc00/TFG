@@ -255,4 +255,11 @@ class DataBase:
         current_date = datetime.now()
         datos["fecha"] = current_date
         self.collectionHistorial.insert_one(datos)
+
+    def getPartidasById(self,id):
+        toReturn = []
+        myquery = {"userId": {"$eq": id}}
+        lista = list(self.collectionHistorial.find(myquery))
+        json_data = dumps(lista)
+        return json.loads(json_data)
         
