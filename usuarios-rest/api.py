@@ -353,14 +353,19 @@ def addTrophy(userId,resultado,modo):
     baseDatos.actualizarVitrina(userId,v)
 
 
-@app.route("/records/<id>", methods=['GET'])
+@app.route("/usuarios/<id>/records/", methods=['GET'])
 def getRecordsUser(id):
     partidas=baseDatos.getPartidasById(id)
     response=jsonify(partidas)
     response.status_code=200
     return response
 
-
+@app.route("/records/<id>", methods=['GET'])
+def getRecordById(id):
+    partida= baseDatos.getPartidaById(id)
+    response=jsonify(partida)
+    response.status_code=200
+    return response
 
 
 #ACTUALIZAR FOTOS

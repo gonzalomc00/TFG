@@ -262,4 +262,12 @@ class DataBase:
         lista = list(self.collectionHistorial.find(myquery))
         json_data = dumps(lista)
         return json.loads(json_data)
+    
+    def getPartidaById(self,idPartida):
+        myquery = {"_id": {"$eq": ObjectId(idPartida)}}
+        lista = list(self.collectionHistorial.find(myquery))
+        json_data = json.loads(dumps(lista))
+        if(len(json_data) == 0):
+            return None
+        return json_data[0]
         
