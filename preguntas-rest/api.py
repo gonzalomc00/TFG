@@ -6,17 +6,28 @@ import os
 import random
 import uuid
 from flask import Flask, Blueprint, Response, flash, request, jsonify, send_from_directory
+from flask_socketio import SocketIO,join_room, leave_room
+from model.room import Room
 from werkzeug.utils import secure_filename
 from model.pregunta import Pregunta
 
 from bbdd import DataBase
 
 
+
+rooms={}
 UPLOAD_FOLDER = getcwd() + '/images/'
 ALLOWED_EXTENSIONS={'jpg','jpeg','png','webp'}
 
+
+
 app = Flask(__name__) #aquí creamos una nueva instancia del servidor Flask.
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app,cors_allowed_origins="*")
+
+
+
 baseDatos = DataBase()
 
 routes_files = Blueprint("routes_files", __name__)
@@ -308,8 +319,55 @@ def imagenRequest(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename, as_attachment=True)
 
+
+
+#SOCKET
+@socketio.on('crearSala')
+def handle_message(data,gameCode):
+    print('received message:' + data)
+
+   
+    foo = random.SystemRandom()
+    code = foo.randint(10000,100000)
+    room= Room(code,gameCode)
+    room.players.append(data)
+    rooms[code]= room
+    join_room(code)
+    socketio.emit('detallesSala',room.to_dict(),to=code)
+
+@socketio.on('entrarSala')
+def entrar_Sala(user,sala):
+    join_room(int(sala))
+ 
+    room=rooms.get(int(sala))
+    room.players.append(user)
+    print(room.players)
+    socketio.emit("detallesSala",room.to_dict(),to=int(sala))
+
+@socketio.on("empezarJuego")
+def empezarJuego(sala):
+    print(sala)
+    room=rooms.get(int(sala))
+    room.questions=baseDatos.getQuestionsGameByCode(int(room.gameCode))
+    socketio.emit("preguntaJuego",room.questions[room.questionNumber].to_dict(),to=int(sala))
+
+
+@socketio.on("siguientePregunta")
+def siguientePregunta(sala):
+    print(sala)
+    room=rooms.get(int(sala))
+    room.questionNumber=room.questionNumber+1
+    print(room.questions[room.questionNumber]._id)
+    socketio.emit("preguntaJuego",room.questions[room.questionNumber].to_dict(),to=int(sala))
+
+    
+
+
+
+
 if __name__ == '__main__':
     from waitress import serve
+
     #app.run(ssl_context=('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.crt', 'C://Users/Gonzalo/Desktop/Universidad/app/security/cert.key'), host='0.0.0.0',port=8385)
     app.run(host='127.0.0.1',port=8385)
 

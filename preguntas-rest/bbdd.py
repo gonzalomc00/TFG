@@ -143,6 +143,13 @@ class DataBase:
         if(len(json_data)==0):
             return None
         return json_data
+    
+    def getGameByCode(self,code):
+        jd = self.db.Juegos.find_one({ "code": code})
+        json_data = json.loads(dumps(jd))
+        if(len(json_data)==0):
+            return None
+        return json_data
 
     def getGames(self):
         toReturn = []
@@ -174,6 +181,18 @@ class DataBase:
         for objeto in json.loads(json_data):
             toReturn.append(parteJsonToPregunta(objeto))
         return toReturn
+    
+    def getQuestionsGameByCode(self,code):
+        juego= self.getGameByCode(code)
+        objetos_ids = [ObjectId(id) for id in juego['preguntas']]
+        filtro = { "_id": { "$in": objetos_ids } }
+        lista = list(self.collection.find(filtro))
+        toReturn=[]
+        json_data = dumps(lista)
+        for objeto in json.loads(json_data):
+            toReturn.append(parteJsonToPregunta(objeto))
+        return toReturn
+    
     
 
     def getQuestionsSinglePlayer(self,pais,categoria):
