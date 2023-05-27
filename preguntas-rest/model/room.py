@@ -5,6 +5,8 @@ class Room():
         self.players=[]
         self.questionNumber=0
         self.questions=[]
+        self.scores={}
+        self.scoresrcv=0
 
 
     def to_dict(self):

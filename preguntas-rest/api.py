@@ -354,13 +354,33 @@ def empezarJuego(sala):
 
 @socketio.on("siguientePregunta")
 def siguientePregunta(sala):
-    print(sala)
     room=rooms.get(int(sala))
     room.questionNumber=room.questionNumber+1
-    print(room.questions[room.questionNumber]._id)
-    socketio.emit("preguntaJuego",room.questions[room.questionNumber].to_dict(),to=int(sala))
+    if(room.questionNumber>len(room.questions)-1):
+        socketio.emit("preguntaJuego",to=int(sala))
+    else:
+        socketio.emit("preguntaJuego",room.questions[room.questionNumber].to_dict(),to=int(sala))
 
+@socketio.on("terminarPregunta")
+def mostrarResultado(sala):
+    socketio.emit("mostrarResultados",to=int(sala))
+
+@socketio.on("resultadoFinal")
+def obtenerResultado(user,score,sala):
+    room=rooms.get(int(sala))
+    room.scoresrcv=room.scoresrcv+1
     
+    room.scores[user]=int(score)
+    if(len(room.players)-1==room.scoresrcv):
+
+        diccionario_ordenado = dict(sorted(room.scores.items(),key=lambda x:x[1], reverse=True))
+        primera_entrada = next(iter(diccionario_ordenado.items()))
+        envio={
+            "nombre": primera_entrada[0],
+            "score": primera_entrada[1]
+        }
+        print(primera_entrada[0])
+        socketio.emit("ganador",envio,to=int(sala))
 
 
 
