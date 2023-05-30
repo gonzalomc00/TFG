@@ -331,12 +331,13 @@ def saveGameRecord():
     resultado= jon['correctAnswers']
     user= jon["userId"]
     modo= jon['gameMode']
-    addTrophy(user,resultado,modo)
+    winner=jon['winner']
+    addTrophy(user,resultado,modo,winner)
     baseDatos.saveRegistroPartida(jon)
 
     return Response(status=200)
 
-def addTrophy(userId,resultado,modo):
+def addTrophy(userId,resultado,modo,winner):
 
     alumno=baseDatos.getUserById(userId)
     v=alumno.vitrina
@@ -349,6 +350,11 @@ def addTrophy(userId,resultado,modo):
         
         if(resultado==10):
             v['medallaOro']= v['medallaOro'] +1
+
+    if(modo=='Classroom Challenge' and winner):
+        v['trofeo']=v['trofeo']+1
+
+
 
     baseDatos.actualizarVitrina(userId,v)
 
