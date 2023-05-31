@@ -6,7 +6,8 @@ import os
 import random
 import uuid
 from flask import Flask, Blueprint, Response, flash, request, jsonify, send_from_directory
-from flask_socketio import SocketIO,join_room, leave_room
+
+from flask_socketio import SocketIO,join_room, leave_room,send, emit
 from model.room import Room
 from werkzeug.utils import secure_filename
 from model.pregunta import Pregunta
@@ -315,7 +316,6 @@ def uploadFotoPregunta(id):
     
 @app.route('/imagen/<filename>')
 def imagenRequest(filename):
-    print("eo")
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename, as_attachment=True)
 
@@ -326,17 +326,32 @@ def imagenRequest(filename):
 def handle_message(data,gameCode):
     print('received message:' + data)
 
-   
-    foo = random.SystemRandom()
-    code = foo.randint(10000,100000)
-    room= Room(code,gameCode)
-    room.players.append(data)
-    rooms[code]= room
-    join_room(code)
-    socketio.emit('detallesSala',room.to_dict(),to=code)
+    game= baseDatos.getGameByCode(int(gameCode))
+    if (game is not None) and game["status"]=="Opened":
+        print("eoeoeooeoeoeoeoeoeoeo")
+        foo = random.SystemRandom()
+        code = foo.randint(10000,100000)
+        while code in rooms:
+          foo = random.SystemRandom()
+          code = foo.randint(10000,100000)
+    
+        room= Room(code,gameCode)
+        room.players.append(data)
+        rooms[code]= room
+        join_room(code)
+        socketio.emit('detallesSala',room.to_dict(),to=code)
+    
+    else:
+        emit('detallesSala')
 
 @socketio.on('entrarSala')
 def entrar_Sala(user,sala):
+
+    if (int(sala) not in rooms):
+        emit("detallesSala")
+        return
+    
+
     join_room(int(sala))
  
     room=rooms.get(int(sala))
@@ -381,14 +396,17 @@ def obtenerResultado(user,score,sala):
             "nombre": primera_entrada[0],
             "score": primera_entrada[1]
         }
+        print("GANADOR")
         print(primera_entrada[0])
+        print(primera_entrada[1])
         socketio.emit("ganador",envio,to=int(sala))
 
 @socketio.on("salirSala")
 def salirSala(sala,user):
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     room=rooms.get(int(sala))
     room.players.remove(user)
+    if(len(room.players)==0):
+        del rooms[int(sala)]
     socketio.emit("detallesSala",room.to_dict(),to=int(sala))
 
 

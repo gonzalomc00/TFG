@@ -145,10 +145,9 @@ class DataBase:
         return json_data
     
     def getGameByCode(self,code):
-        jd = self.db.Juegos.find_one({ "code": code})
+        myquery={"code": {"$eq": code}}
+        jd = self.db.Juegos.find_one(myquery)
         json_data = json.loads(dumps(jd))
-        if(len(json_data)==0):
-            return None
         return json_data
 
     def getGames(self):

@@ -331,7 +331,10 @@ def saveGameRecord():
     resultado= jon['correctAnswers']
     user= jon["userId"]
     modo= jon['gameMode']
-    winner=jon['winner']
+    if(modo=='Classroom Challenge'):
+        winner=jon['winner']
+    else:
+        winner=False
     addTrophy(user,resultado,modo,winner)
     baseDatos.saveRegistroPartida(jon)
 
