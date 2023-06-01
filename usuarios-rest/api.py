@@ -282,7 +282,7 @@ def getAllTemas():
     return response
 
 
-@app.route("/usuarios/top", methods=['GET','POST'])
+@app.route("/usuarios/top", methods=['GET'])
 def getusersTop():
 
     medallas = list(baseDatos.getTopMedallas())
@@ -304,20 +304,12 @@ def getusersTop():
         inf['ind'] = i
         i +=1
 
-    if request.method == 'POST':
-        jon = json.loads(request.data)
-        mail = jon["mail"]
-        stats = baseDatos.getStatsUser(mail)
-        infins.append(stats[0])
-        trofeos.append(stats[1])
-        medallas.append(stats[2])
-
 
     contenido = {
         "resultado" : "OK",
-        "medallas" : json.dumps(medallas),
-        "trofeos" : json.dumps(trofeos),
-        "infinites" : json.dumps(infins)
+        "medallas" : medallas,
+        "trofeos" : trofeos,
+        "infinites" : infins
     }
     response = jsonify(contenido)
     response.status_code = 200
