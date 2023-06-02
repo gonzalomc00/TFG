@@ -127,13 +127,13 @@ class DataBase:
         self.collection.find_one_and_update(myquery, updt)
     
     def getTopMedallas(self):
-        return self.collection.find({},{"name":1,"vitrina.medallaOro":1,"_id":0}).sort("vitrina.medallaOro",-1).limit(5)
+        return self.collection.find({},{"name":1,"lastname":1,"vitrina.medallaOro":1,"_id":0}).sort("vitrina.medallaOro",-1).limit(5)
 
     def getTopTrofeos(self):
-        return self.collection.find({},{"name":1,"vitrina.trofeo":1,"_id":0}).sort("vitrina.trofeo",-1).limit(5)
+        return self.collection.find({},{"name":1,"lastname":1,"vitrina.trofeo":1,"_id":0}).sort("vitrina.trofeo",-1).limit(5)
     
     def getTopInfinites(self):
-        return self.collection.find({},{"name":1,"vitrina.recordInfinito":1,"_id":0}).sort("vitrina.recordInfinito",-1).limit(5)
+        return self.collection.find({},{"name":1,"lastname":1,"vitrina.recordInfinito":1,"_id":0}).sort("vitrina.recordInfinito",-1).limit(5)
 
 
 
