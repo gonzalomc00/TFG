@@ -90,10 +90,11 @@ def comprobarRegistro(correo):
             return Response(status=404)
     return Response(status=200)
 
-@app.route("/mensaje",methods=['GET'])
+@app.route("/comprobarCodigo",methods=['POST'])
 def comprobarCodigo():
-    email = request.args.get('email')
-    code = request.args.get('code')
+    jon=json.loads(request.data)
+    email=jon["email"]
+    code=jon["code"]
     if(diccionario.get(email)==int(code)):
         return Response(status=200)
     return Response(status=404)
@@ -146,60 +147,26 @@ def sendMail():
 
 @app.route("/usuarios/mensajeContra", methods=['POST'])
 def sendMailContrasena():
-    destinatario = request.form.get("mail")
-    contrasena = request.form.get("password")
-    if(comprobarLogin(destinatario, contrasena) == None):
-        contenido = {
-      "resultado": "ERROR",
-      "mensaje": "The password or mail was incorrect"
-    }
-    else:
-        foo = random.SystemRandom()
-        code = foo.randint(10000,100000)
-        enviarCorreoPassword(destinatario,code)
-        contenido = {
-        "resultado": "OK"
-        }
-        diccionario.update({destinatario:code})
+    jon=json.loads(request.data)
+    destinatario = jon["email"]
+    for user in baseDatos.getAllUsers():
+        if(user.mail == destinatario):
+            foo = random.SystemRandom()
+            code = foo.randint(10000,100000)
+            enviarCorreoPassword(destinatario,code)
+            diccionario.update({destinatario:code})    
     
-    resp = jsonify(contenido)
-    resp.status_code = 200
-    return resp
+    
+    return Response(status=200)
+
 
 @app.route("/usuarios/chngPsswrd", methods=['POST'])
 def cambioContrasena():
-    code = request.form.get("code")
-    mail = request.form.get("mail")
-    contra = request.form.get("password")
-    
-    """ if(diccionario.get(mail)==int(code)):
-        baseDatos.updatePassword(mail, contra)
-        contenido = {
-            "resultado" : "OK"
-        } 
-    
-        response = jsonify(contenido)
-        response.status_code = 200
-        return response
-    
-    else:
-        contenido = {
-            "resultado" : "ERROR",
-            "mensaje" : "The code was wrong"
-        }
-        response = jsonify(contenido)
-        response.status_code = 400
-        return response
-    """
-    print(contra)
+    jon=json.loads(request.data)
+    mail=jon["email"]
+    contra=jon["pass"]
     baseDatos.updatePassword(mail,contra)
-    contenido = {
-        "resultado" : "OK"
-    }
-
-    response = jsonify(contenido)
-    response.status_code = 200
-    return response
+    return Response(status=200)
 
 
 @app.route("/usuarios/<id>", methods=['GET'])
