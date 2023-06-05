@@ -83,8 +83,6 @@ def login():
 
 @app.route("/registro/<correo>",methods=['GET'])
 def comprobarRegistro(correo):
-    if(not correo.endswith("@um.es")):
-      return Response(status=404)
     for user in baseDatos.getAllUsers():
         if(user.mail == correo):
             return Response(status=404)

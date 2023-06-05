@@ -26,11 +26,3 @@ class User:
 
     def setVitrina(self, vitrin):
         self.vitrina = vitrin
-
-    def addTrofeo(self, trofeo):
-        if(trofeo == "medallaOro"): self.vitrina.medallaOro +=1
-        elif(trofeo == "medallaPlata"): self.vitrina.medallaPlata +=1
-        elif(trofeo == "medallaBronce"): self.vitrina.medallaBronce +=1
-        elif(trofeo == "trofeo"): self.vitrina.trofeo +=1
-        elif(self.vitrina.recordInfinito < trofeo): self.vitrina.recordInfinito = trofeo
-        self.vitrina.numPartidas +=1
