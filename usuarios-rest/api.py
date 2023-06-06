@@ -313,9 +313,12 @@ def addTrophy(userId,resultado,modo,winner):
 
     if(modo=='Classroom Challenge' and winner):
         v['trofeo']=v['trofeo']+1
+    
+    if(modo=='Infinite Mode' and resultado>v['recordInfinito']):
+        v['recordInfinito']=resultado
 
 
-
+    v['numPartidas']=v['numPartidas']+1
     baseDatos.actualizarVitrina(userId,v)
 
 

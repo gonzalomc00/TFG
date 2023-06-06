@@ -202,6 +202,16 @@ def editPregunta(id):
 
     return Response(status=200)
 
+
+@app.route("/preguntas/infinite",methods=['GET'])
+def getPreguntaInfinite():
+    temas=baseDatos.getTemas()
+    pregunta=baseDatos.getPreguntasPorCategorias(temas)
+    response=jsonify(pregunta.to_dict())
+    response.status_code=200
+    return response
+
+
 @app.route("/temas",methods=['POST'])
 def crearTemas():
     baseDatos.crearTemas()

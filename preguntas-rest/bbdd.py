@@ -51,6 +51,22 @@ class DataBase:
             return None
         return json_data
     
+    def getPreguntasPorCategorias(self,temas):
+        
+
+        consulta = [
+    { '$match': { '$or': [
+        {'pais': pais, 'categoria': categoria}
+        for pais, categorias in temas.items()
+        for categoria, activada in categorias.items() if activada
+    ] } },
+    { '$sample': { 'size': 1 } }
+]
+        documentos_filtrados = self.collection.aggregate(consulta).next()
+        json_data=json.loads(dumps(documentos_filtrados))
+
+        return parteJsonToPregunta(json_data)
+    
     def getAllPreguntas(self):
         toReturn = []
         lista = list(self.collection.find())
@@ -72,7 +88,7 @@ class DataBase:
         updt={"$set":{"image": image}}
         self.collection.find_one_and_update(myquery,updt)
 
-    def getPreguntasPorCategorias(self, lista):
+    def getPreguntaByCategorias(self, lista):
         toReturn = []
         for i in lista:
             myquery = { "categoria": { "$eq": i } }
