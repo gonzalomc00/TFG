@@ -7,6 +7,7 @@ class Room():
         self.questions=[]
         self.scores={}
         self.scoresrcv=0
+        self.timer=-1
 
 
     def to_dict(self):
@@ -15,5 +16,6 @@ class Room():
             "gameCode": self.gameCode,
             "players": self.players,
             "questionNumber":self.questionNumber,
-            "questions": self.questions
+            "questions": self.questions,
+            "timer":self.timer
         }

@@ -11,6 +11,7 @@ from flask_socketio import SocketIO,join_room, leave_room,send, emit
 from model.room import Room
 from werkzeug.utils import secure_filename
 from model.pregunta import Pregunta
+from bson.json_util import dumps
 
 from bbdd import DataBase
 
@@ -369,6 +370,16 @@ def entrar_Sala(user,sala):
     print(room.players)
     socketio.emit("detallesSala",room.to_dict(),to=int(sala))
 
+@socketio.on('updateTimer')
+def updateTimer(sala,timer):
+
+    room=rooms.get(int(sala))
+    room.timer=int(timer)
+
+    socketio.emit("detallesSala",room.to_dict(),to=int(sala))
+
+
+
 @socketio.on("empezarJuego")
 def empezarJuego(sala):
     print(sala)
@@ -406,10 +417,17 @@ def obtenerResultado(user,score,sala):
             "nombre": primera_entrada[0],
             "score": primera_entrada[1]
         }
-        print("GANADOR")
-        print(primera_entrada[0])
-        print(primera_entrada[1])
-        socketio.emit("ganador",envio,to=int(sala))
+
+        lista_jsons=[]
+        for entrada, datos in diccionario_ordenado.items():
+            entrada = {
+                "nombre":entrada,
+                "score":datos
+            }
+            json_individual = entrada
+            lista_jsons.append(json_individual)
+
+        socketio.emit("ganador",lista_jsons,to=int(sala))
 
 @socketio.on("salirSala")
 def salirSala(sala,user):
