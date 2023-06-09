@@ -2,3 +2,5 @@ gunicorn
 flask
 werkzeug
 uuid
+pymongo
+bson
