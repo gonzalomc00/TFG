@@ -1,13 +1,11 @@
 from os import getcwd
 import os
-from pprint import pprint
 import random
 import json
 from flask import Flask, Response, flash, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 from mail import enviarCorreoRegistro, enviarCorreoPassword
 from modelo.user import User
-import base64
 import uuid as uuid;
 
 
@@ -24,19 +22,12 @@ listAlumnos = []
 diccionario = {}
 
 
-"""
-client = MongoClient('localhost', 27017)
-
-db = client.tfg
-global collectionAlumno
-collectionAlumno = db.alumno
-"""
 
 @app.after_request
 def after_request(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
+    response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS,PUT,DELETE"
     response.headers["Access-Control-Allow-Headers"] = "Accept, enctype, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
     return response
 
@@ -81,8 +72,11 @@ def login():
     else:
         return Response(status=401)
 
-@app.route("/registro/<correo>",methods=['GET'])
-def comprobarRegistro(correo):
+@app.route("/comprobarCorreo",methods=['POST'])
+def comprobarRegistro():
+    jon=json.loads(request.data)
+    correo=jon["correo"]
+
     for user in baseDatos.getAllUsers():
         if(user.mail == correo):
             return Response(status=404)
@@ -106,7 +100,6 @@ def registro():
     password = jon["passw"]
     name = jon["name"]
     lastname=jon["lastname"]
-    print("ComprobarRegistro:"+comprobarRegistro(mail).__str__())
     baseDatos.registrarAlumno(mail,password,name,lastname)
     print("registroOK")
     return Response(status=200)
@@ -376,7 +369,7 @@ def uploadFotoPerfil(id):
 def imagenRequest(filename):
     print("eo")
     return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename, as_attachment=True)
+                               filename, as_attachment=True,mimetype='image/jpg')
 
 if __name__ == '__main__':
     from waitress import serve

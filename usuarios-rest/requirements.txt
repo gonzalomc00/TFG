@@ -1,0 +1,4 @@
+gunicorn
+flask
+werkzeug
+uuid

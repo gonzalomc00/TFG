@@ -328,7 +328,7 @@ def uploadFotoPregunta(id):
 @app.route('/imagen/<filename>')
 def imagenRequest(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename, as_attachment=True)
+                               filename, as_attachment=True,mimetype='image/jpg')
 
 
 
