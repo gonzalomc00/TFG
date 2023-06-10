@@ -26,7 +26,7 @@ ALLOWED_EXTENSIONS={'jpg','jpeg','png','webp'}
 app = Flask(__name__) #aquí creamos una nueva instancia del servidor Flask.
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app,cors_allowed_origins="*")
+socketio = SocketIO(app,cors_allowed_origins="*",async_handlers=True)
 
 
 
@@ -444,5 +444,5 @@ if __name__ == '__main__':
     from waitress import serve
 
     #app.run(ssl_context=('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.crt', 'C://Users/Gonzalo/Desktop/Universidad/app/security/cert.key'), host='0.0.0.0',port=8385)
-    app.run(host='127.0.0.1',port=8385)
+    app.run(host='127.0.0.1',port=8385,debug=True)
 
