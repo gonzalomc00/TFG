@@ -139,8 +139,6 @@ class DataBase:
 
 
     def saveRegistroPartida(self,id_user,datos):
-        current_date = datetime.now()
-        datos["fecha"] = current_date
         filtro={'_id': ObjectId(id_user)}
         actualizacion={'$push': {'history': datos}}
         self.collection.update_one(filtro,actualizacion)
