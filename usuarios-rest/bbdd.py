@@ -25,8 +25,8 @@ class DataBase:
         # establish connex
         conn = MongoClient("mongodb+srv://gonzalo:Contrasena1234@cchaseprueba.mtrqiqh.mongodb.net/?retryWrites=true&w=majority")
         # connect db
-        self.db = conn.Juego
-        #self.db = conn.test
+        #self.db = conn.Juego
+        self.db = conn.test
         self.collection=self.db.User
         self.collectionHistorial=self.db.Historia
         
@@ -145,18 +145,3 @@ class DataBase:
         actualizacion={'$push': {'history': datos}}
         self.collection.update_one(filtro,actualizacion)
 
-    def getPartidasById(self,id):
-        toReturn = []
-        myquery = {"userId": {"$eq": id}}
-        lista = list(self.collectionHistorial.find(myquery))
-        json_data = dumps(lista)
-        return json.loads(json_data)
-    
-    def getPartidaById(self,idPartida):
-        myquery = {"_id": {"$eq": ObjectId(idPartida)}}
-        lista = list(self.collectionHistorial.find(myquery))
-        json_data = json.loads(dumps(lista))
-        if(len(json_data) == 0):
-            return None
-        return json_data[0]
-        
