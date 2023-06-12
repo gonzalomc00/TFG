@@ -274,20 +274,18 @@ def getusersTop():
     return response
 
 
-@app.route("/records",methods=['POST'])
-def saveGameRecord():
+@app.route("/usuarios/<id>/records",methods=['POST'])
+def saveGameRecord(id):
     jon= json.loads(request.data)
 
     resultado= jon['correctAnswers']
-    user= jon["userId"]
     modo= jon['gameMode']
     if(modo=='Classroom Challenge'):
         winner=jon['winner']
     else:
         winner=False
-    addTrophy(user,resultado,modo,winner)
-    baseDatos.saveRegistroPartida(jon)
-
+    addTrophy(id,resultado,modo,winner)
+    baseDatos.saveRegistroPartida(id,jon)
     return Response(status=200)
 
 def addTrophy(userId,resultado,modo,winner):
@@ -314,20 +312,6 @@ def addTrophy(userId,resultado,modo,winner):
     v['numPartidas']=v['numPartidas']+1
     baseDatos.actualizarVitrina(userId,v)
 
-
-@app.route("/usuarios/<id>/records/", methods=['GET'])
-def getRecordsUser(id):
-    partidas=baseDatos.getPartidasById(id)
-    response=jsonify(partidas)
-    response.status_code=200
-    return response
-
-@app.route("/records/<id>", methods=['GET'])
-def getRecordById(id):
-    partida= baseDatos.getPartidaById(id)
-    response=jsonify(partida)
-    response.status_code=200
-    return response
 
 
 #ACTUALIZAR FOTOS

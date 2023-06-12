@@ -3,7 +3,7 @@ from modelo.vitrina import Vitrina
 
 class User:
 
-    def __init__(self,id,correo,contrasena,nombre,lastname,image,rol,vitrina):
+    def __init__(self,id,correo,contrasena,nombre,lastname,image,rol,vitrina,history):
         self._id=id
         self.mail = correo
         self.password = contrasena
@@ -12,6 +12,7 @@ class User:
         self.image=image
         self.rol=rol
         self.vitrina = vitrina
+        self.history=history
 
     def to_dict(self):
         return {
@@ -21,7 +22,8 @@ class User:
             "correo": self.mail,
             "image":self.image,
             "rol": self.rol,
-            "vitrina": self.vitrina
+            "vitrina": self.vitrina,
+            "history": self.history
         }
 
     def setVitrina(self, vitrin):

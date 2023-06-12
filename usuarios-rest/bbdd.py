@@ -12,7 +12,7 @@ from mail import enviarCorreoLogroToProfesor, enviarCorreoLogroToAlumno
 
 def parseJsontoUser(json) -> User:
   
-    user=User(json['_id'],json['mail'], json['password'], json['name'],json['lastname'],json['image'],json['rol'],json['vitrina'])
+    user=User(json['_id'],json['mail'], json['password'], json['name'],json['lastname'],json['image'],json['rol'],json['vitrina'],json['history'])
     return user
 
 
@@ -25,8 +25,8 @@ class DataBase:
         # establish connex
         conn = MongoClient("mongodb+srv://gonzalo:Contrasena1234@cchaseprueba.mtrqiqh.mongodb.net/?retryWrites=true&w=majority")
         # connect db
-        #self.db = conn.Juego
-        self.db = conn.test
+        self.db = conn.Juego
+        #self.db = conn.test
         self.collection=self.db.User
         self.collectionHistorial=self.db.Historia
         
@@ -44,7 +44,8 @@ class DataBase:
                                  "medallaBronce": 0,
                                  "trofeo": 0,
                                  "recordInfinito": 0,
-                                 "numPartidas": 0}}
+                                 "numPartidas": 0},
+                     "history":[]}
         collection.insert_one(aInsertar)
 
     def getUserById(self,id) -> User:
@@ -137,10 +138,12 @@ class DataBase:
 
 
 
-    def saveRegistroPartida(self,datos):
+    def saveRegistroPartida(self,id_user,datos):
         current_date = datetime.now()
         datos["fecha"] = current_date
-        self.collectionHistorial.insert_one(datos)
+        filtro={'_id': ObjectId(id_user)}
+        actualizacion={'$push': {'history': datos}}
+        self.collection.update_one(filtro,actualizacion)
 
     def getPartidasById(self,id):
         toReturn = []
