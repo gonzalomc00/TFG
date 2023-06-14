@@ -25,8 +25,8 @@ class DataBase:
         # establish connex
         conn = MongoClient("mongodb+srv://gonzalo:Contrasena1234@cchaseprueba.mtrqiqh.mongodb.net/?retryWrites=true&w=majority")
         # connect db
-        #self.db = conn.Juego
-        self.db = conn.test
+        self.db = conn.Juego
+        #self.db = conn.test
         self.collection=self.db.User
         self.collectionHistorial=self.db.Historia
         
@@ -42,7 +42,9 @@ class DataBase:
                      "vitrina": {"medallaOro": 0,
                                  "medallaPlata": 0,
                                  "medallaBronce": 0,
-                                 "trofeo": 0,
+                                 "trofeoOro": 0,
+                                 "trofeoPlata":0,
+                                 "trofeoBronce":0,
                                  "recordInfinito": 0,
                                  "numPartidas": 0},
                      "history":[]}

@@ -4,7 +4,9 @@ class Vitrina:
         self.medallaOro = 0
         self.medallaPlata = 0
         self.medallaBronce = 0
-        self.trofeo = 0
+        self.trofeoOro = 0
+        self.trofeoPlata=0
+        self.trofeoBronce=0
         self.recordInfinito = 0
         self.numPartidas = 0
 

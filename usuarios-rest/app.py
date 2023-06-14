@@ -281,14 +281,14 @@ def saveGameRecord(id):
     resultado= jon['correctAnswers']
     modo= jon['gameMode']
     if(modo=='Classroom Challenge'):
-        winner=jon['winner']
+        place=jon['place']
     else:
-        winner=False
-    addTrophy(id,resultado,modo,winner)
+        place=-1
+    addTrophy(id,resultado,modo,place)
     baseDatos.saveRegistroPartida(id,jon)
     return Response(status=200)
 
-def addTrophy(userId,resultado,modo,winner):
+def addTrophy(userId,resultado,modo,place):
 
     alumno=baseDatos.getUserById(userId)
     v=alumno.vitrina
@@ -302,9 +302,15 @@ def addTrophy(userId,resultado,modo,winner):
         if(resultado==10):
             v['medallaOro']= v['medallaOro'] +1
 
-    if(modo=='Classroom Challenge' and winner):
-        v['trofeo']=v['trofeo']+1
-    
+    if(modo=='Classroom Challenge'):
+        
+        if(place==0):
+            v['trofeoOro']=v['trofeoOro']+1
+        elif(place==1):
+            v['trofeoPlata']=v['trofeoPlata']+1
+        elif(place==2):
+            v['trofeoBronce']=v['trofeoBronce']+1
+
     if(modo=='Infinite Mode' and resultado>v['recordInfinito']):
         v['recordInfinito']=resultado
 
