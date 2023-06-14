@@ -269,9 +269,8 @@ def updateGame():
     jon= json.loads(request.data)
     id = jon["_id"]
     nombre= jon["name"]
-    preguntas = jon["questions"]
     status= jon["status"]
-    baseDatos.updateGame(id,nombre,preguntas,status)
+    baseDatos.updateGame(id,nombre,status)
     return Response(status=200)
 
 @app.route("/games/<id>",methods=['DELETE'])

@@ -244,16 +244,49 @@ def getAllTemas():
 def getusersTop():
 
     medallas = list(baseDatos.getTopMedallas())
+    medallasPlata=list(baseDatos.getTopMedallasSilver())
+    medallasBronce=list(baseDatos.getTopMedallasBronce())
     trofeos = list(baseDatos.getTopTrofeos())
     infins = list(baseDatos.getTopInfinites())
+    trofeosPlata=list(baseDatos.getTopTrofeosPlata())
+    trofeosBronce=list(baseDatos.getTopTrofeosBronce())
+
 
     i=1
     for medal in medallas:
+        
         medal['ind'] = i
         i +=1
+        print(medal)
+
+    i=1
+    for medal in medallasPlata:
+        medal['ind'] = i
+        i +=1
+        print(medal)
+
+    i=1
+    for medal in medallasBronce:
+        medal['ind'] = i
+        i +=1
+        print(medal)
+
+
 
     i=1
     for trof in trofeos:
+        trof['ind'] = i
+        i +=1
+    
+    i=1
+    for trof in trofeosPlata:
+        print(trof)
+        trof['ind'] = i
+        i +=1
+
+    i=1
+    for trof in trofeosBronce:
+        print(trof)
         trof['ind'] = i
         i +=1
 
@@ -266,7 +299,11 @@ def getusersTop():
     contenido = {
         "resultado" : "OK",
         "medallas" : medallas,
+        "medallasPlata":medallasPlata,
+        "medallasBronce": medallasBronce,
         "trofeos" : trofeos,
+        "trofeosPlata" : trofeosPlata,
+        "trofeosBronce" : trofeosBronce,
         "infinites" : infins
     }
     response = jsonify(contenido)

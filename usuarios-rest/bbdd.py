@@ -130,13 +130,118 @@ class DataBase:
         self.collection.find_one_and_update(myquery, updt)
     
     def getTopMedallas(self):
-        return self.collection.find({},{"name":1,"lastname":1,"vitrina.medallaOro":1,"_id":0}).sort("vitrina.medallaOro",-1).limit(10)
+        return self.collection.aggregate([
+               { "$match": { "rol": { "$eq": "Student" } } },
+             {"$sort":{"vitrina.medallaOro":-1}},
+        {"$limit":10},
+         {
+        "$project": {
+            "name": "$name",
+            "lastname": "$lastname",
+            "score": "$vitrina.medallaOro",
+            "_id":0
+         }
+        }
+        ])
+    
+    def getTopMedallasSilver(self):
+        return self.collection.aggregate([
+               { "$match": { "rol": { "$eq": "Student" } } },
+             {"$sort":{"vitrina.medallaPlata":-1}},
+        {"$limit":10},
+         {
+        "$project": {
+            "name": "$name",
+            "lastname": "$lastname",
+            "score": "$vitrina.medallaPlata",
+            "_id":0
+         }
+        },
+        ])
+    
+    def getTopMedallasBronce(self):
+        return self.collection.aggregate([ 
+               { "$match": { "rol": { "$eq": "Student" } } },
+            {"$sort":{"vitrina.medallaBronce":-1}},
+        {"$limit":10},
+         {
+        "$project": {
+            "name": "$name",
+            "lastname": "$lastname",
+            "score": "$vitrina.medallaBronce",
+            "_id":0
+         }
+        }
+        ])
+    
+
 
     def getTopTrofeos(self):
-        return self.collection.find({},{"name":1,"lastname":1,"vitrina.trofeoOro":1,"_id":0}).sort("vitrina.trofeoOro",-1).limit(10)
+        return self.collection.aggregate([
+               { "$match": { "rol": { "$eq": "Student" } } },
+            {"$sort":{"vitrina.trofeoOro":-1}},
+        {"$limit":10},
+         {
+        "$project": {
+            "name": "$name",
+            "lastname": "$lastname",
+            "score": "$vitrina.trofeoOro",
+            "_id":0
+         }
+        },
+        {"$sort":{"score":-1}},
+        {"$limit":10}
+        ])
+    
+    def getTopTrofeosPlata(self):
+        return self.collection.aggregate([
+             { "$match": { "rol": { "$eq": "Student" } } },
+               {"$sort":{"vitrina.trofeoPlata":-1}},
+        {"$limit":10},
+         {
+        "$project": {
+            "name": "$name",
+            "lastname": "$lastname",
+            "score": "$vitrina.trofeoPlata",
+            "_id":0
+         }
+        },
+     
+        ])
+    
+    def getTopTrofeosBronce(self):
+        return self.collection.aggregate([
+               { "$match": { "rol": { "$eq": "Student" } } },
+        {"$sort":{"vitrina.trofeoBronce":-1}},
+        {"$limit":10},
+         {
+        "$project": {
+            "name": "$name",
+            "lastname": "$lastname",
+            "score": "$vitrina.trofeoBronce",
+            "_id":0
+         }
+        },
+     
+        ])
+    
     
     def getTopInfinites(self):
-        return self.collection.find({},{"name":1,"lastname":1,"vitrina.recordInfinito":1,"_id":0}).sort("vitrina.recordInfinito",-1).limit(10)
+        return self.collection.aggregate([
+               { "$match": { "rol": { "$eq": "Student" } } },
+          {"$sort":{"vitrina.recordInfinito":-1}},
+        {"$limit":10},
+        {
+        "$project": {
+            "name": "$name",
+            "lastname": "$lastname",
+            "score": "$vitrina.recordInfinito",
+            "_id":0
+         }
+        },
+        ])
+    
+    
 
 
 

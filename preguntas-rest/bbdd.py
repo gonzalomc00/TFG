@@ -175,10 +175,9 @@ class DataBase:
             toReturn.append(parseJsonToGame(objeto))
         return toReturn
     
-    def updateGame(self,id,nombre,preguntas,status):
+    def updateGame(self,id,nombre,status):
         myquery = {"_id": {"$eq": ObjectId(id)}}
         updt={"$set":{"nombre":nombre,
-                      "preguntas":preguntas,
                       "status":status,}}
        
         self.db.Juegos.find_one_and_update(myquery, updt)
