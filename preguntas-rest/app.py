@@ -409,7 +409,7 @@ def obtenerResultado(user,score,sala):
     room.scoresrcv=room.scoresrcv+1
     
     room.scores[user]=int(score)
-    if(len(room.players)==room.scoresrcv):
+    if(len(room.players)-1==room.scoresrcv):
 
         diccionario_ordenado = dict(sorted(room.scores.items(),key=lambda x:x[1], reverse=True))
         primera_entrada = next(iter(diccionario_ordenado.items()))

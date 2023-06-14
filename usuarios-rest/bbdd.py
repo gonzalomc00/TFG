@@ -25,8 +25,8 @@ class DataBase:
         # establish connex
         conn = MongoClient("mongodb+srv://gonzalo:Contrasena1234@cchaseprueba.mtrqiqh.mongodb.net/?retryWrites=true&w=majority")
         # connect db
-        #self.db = conn.Juego
-        self.db = conn.test
+        self.db = conn.Juego
+        #self.db = conn.test
         self.collection=self.db.User
         self.collectionHistorial=self.db.Historia
         
