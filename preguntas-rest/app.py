@@ -80,15 +80,17 @@ def upload_foto(file,idPregunta):
         nombre_archivo= str(uuid.uuid1())+"_"+filename
 
         #Eliminamos la foto antigua, para ello obtenemos su nombre primero 
-        question= baseDatos.getPreguntaById(idPregunta)
-        if(question['image'] != ""):
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'],question['image']))
+        delete_foto(idPregunta)
         
         file.save(os.path.join(app.config['UPLOAD_FOLDER'],nombre_archivo))
         baseDatos.updateImagen(idPregunta,nombre_archivo)
         return nombre_archivo
 
+def delete_foto(idPregunta):
 
+    question=baseDatos.getPreguntaById(idPregunta)
+    if(question['image']!=""):
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'],question['image']))
 
 
 #################### COMIENZO API ####################
@@ -197,6 +199,9 @@ def editPregunta(id):
     if 'files' in request.files:
         file= request.files['files']
         image=upload_foto(file,id)
+    else:
+        delete_foto(id)
+        baseDatos.updateImagen(id,"")
 
     baseDatos.editarPregunta(id,enunciado,solucion,pais,categoria,informacion)
 
