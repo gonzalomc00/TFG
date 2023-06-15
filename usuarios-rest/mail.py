@@ -12,10 +12,8 @@ def enviarCorreoRegistro(destinatario, code):
     message = f"<html><head><title>New User</title></head><body><h1>Welcome to Cultural Challenge for English Students</h1><br>Your code is <em>{code}</em>.<br>Thank you.</body></html>"
  
     # setup the parameters of the message
-    password = ""
-    msg['From'] = "gonzalomanzanrescarmona@gmail.com"
-    #password = "YmEuQj49"
-    #msg['From'] = "CChase@um.es"
+    password = "YmEuQj49"
+    msg['From'] = "CChase@um.es"
     msg['To'] = destinatario
     msg['Subject'] = "New Player CChase"
     
@@ -23,12 +21,12 @@ def enviarCorreoRegistro(destinatario, code):
     msg.attach(MIMEText(message, 'html'))
     
     #create server
-    server = smtplib.SMTP('smtp.gmail.com: 587')
+    server = smtplib.SMTP('smtp.um.es: 587')
     
     server.starttls()
     
     # Login Credentials for sending the mail
-    server.login("gonzalomanzanrescarmona@gmail.com", password)
+    server.login("guillermo.nunezc@um.es", password)
     
 
     # send the message via the server.
@@ -45,10 +43,8 @@ def enviarCorreoPassword(destinatario, code):
  
     message = f"<html><head><title>Change Password</title></head><body><h1>Nice to see you again</h1><br>Your code for change the password is <em>{code}</em>.<br>Thank you, Cultural Challenge for English Students.</body></html>"
  
-    #password = "YmEuQj49"
-    #msg['From'] = "CChase@um.es"
-    password = ""
-    msg['From'] = "gonzalomanzanrescarmona@gmail.com"
+    password = "YmEuQj49"
+    msg['From'] = "CChase@um.es"
     msg['To'] = destinatario
     msg['Subject'] = "New Password CChase"
     
@@ -56,12 +52,12 @@ def enviarCorreoPassword(destinatario, code):
     msg.attach(MIMEText(message, 'html'))
     
     #create server
-    server = smtplib.SMTP('smtp.gmail.com: 587')
+    server = smtplib.SMTP('smtp.um.es: 587')
     
     server.starttls()
     
     # Login Credentials for sending the mail
-    server.login("gonzalomanzanrescarmona@gmail.com", password)
+    server.login("guillermo.nunezc@um.es", password)
     
 
     # send the message via the server.
