@@ -12,7 +12,7 @@ def enviarCorreoRegistro(destinatario, code):
     message = f"<html><head><title>New User</title></head><body><h1>Welcome to Cultural Challenge for English Students</h1><br>Your code is <em>{code}</em>.<br>Thank you.</body></html>"
  
     # setup the parameters of the message
-    password = "yzcthhgoqewlnuzy"
+    password = ""
     msg['From'] = "gonzalomanzanrescarmona@gmail.com"
     #password = "YmEuQj49"
     #msg['From'] = "CChase@um.es"
@@ -47,7 +47,7 @@ def enviarCorreoPassword(destinatario, code):
  
     #password = "YmEuQj49"
     #msg['From'] = "CChase@um.es"
-    password = "yzcthhgoqewlnuzy"
+    password = ""
     msg['From'] = "gonzalomanzanrescarmona@gmail.com"
     msg['To'] = destinatario
     msg['Subject'] = "New Password CChase"
