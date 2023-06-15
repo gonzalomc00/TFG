@@ -1,3 +1,4 @@
+
 from os import getcwd
 import os
 import random
@@ -7,7 +8,7 @@ from werkzeug.utils import secure_filename
 from mail import enviarCorreoRegistro, enviarCorreoPassword
 from modelo.user import User
 import uuid as uuid;
-
+from flask_bcrypt import Bcrypt
 
 
 from bbdd import DataBase
@@ -16,6 +17,7 @@ UPLOAD_FOLDER = getcwd() + '/images/'
 ALLOWED_EXTENSIONS={'jpg','jpeg','png'}
 
 app = Flask(__name__) #aquí creamos una nueva instancia del servidor Flask.
+bcrypt = Bcrypt(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 baseDatos = DataBase()
 listAlumnos = []
@@ -35,7 +37,7 @@ def after_request(response):
 
 def comprobarLogin(correo, contrasena) -> User:
     user = baseDatos.getUserByMail(correo)
-    if(user != None and user.password == contrasena):
+    if(user != None and bcrypt.check_password_hash(user.password, contrasena)):
         return user
     return None
 
