@@ -1,0 +1,21 @@
+.mat-mdc-cell{
+    white-space: normal; 
+    word-wrap: break-word;
+  }
+
+  .mat-column-Name {
+    width: 40vw;
+    max-width: 40vw !important;
+    min-width: 40vw !important;
+  }
+
+
+  .mat-mdc-form-field{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    outline: 10;
+  }
+  
+
+  

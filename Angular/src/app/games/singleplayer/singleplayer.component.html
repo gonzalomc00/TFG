@@ -1,0 +1,104 @@
+
+<div *ngIf="!fin && preguntaActual">
+
+
+<div id="Stats Field" class="text-center d-flex justify-content-between">
+    <div>
+       <p class=" fw-bold">Question {{indicePregunta}}</p>
+    </div>
+<div>
+    <cd-timer #basicTimer class="bootstrap-timer" (onComplete)="timeOut()" [countdown]="true" [startTime]="tiempo" format="intelli"></cd-timer>
+</div>    
+
+    <div>
+        <p class="fw-bold" style="margin:0"> Score: {{puntuacion}}</p>
+        <img class="imagenVida"*ngFor="let imagen of imagenesVidas; let i = index" src="assets/images/vida.png" alt="Vida {{ i + 1 }}">
+
+      
+    </div>
+
+</div>
+
+
+<div id="Question Field" class=" text-center contenedor-pregunta">
+    <div class="texto-pregunta fw-bold text-break">
+        {{preguntaActual.question}}
+    </div>
+
+    <div *ngIf="preguntaActual.image!=''">
+        <img class="img-pregunta" [src]="preguntaActual.image" alt="{{preguntaActual.information}}">
+    </div>
+    
+    <div *ngIf="preguntaActual.image==''">
+        <img class="img-pregunta-placeholder" src="assets/images/question-placeholder.png" alt="Placeholder image">
+    </div>
+    
+
+</div>
+<div id="Response Field" class="contenedor-respuesta" >
+   
+        <div class="row">
+            <div class="col-lg-10 col-md-12">
+                <div class="row">
+                <div class=" d-flex contenedor">
+                    <div *ngFor="let palabra of palabras">
+                            <code-input inputType="text" [ngClass]="{'wrong': !correcto}" [isCodeHidden]="false" [isCharsCode]="true" [codeLength]="palabra.longitud"
+                            (codeChanged)="onCodeChanged($event,palabra.posicion)">
+                        </code-input>
+                    </div>
+                   
+                    </div>
+
+                    
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <button mat-raised-button color="primary" (click)="sendResults()">Send answer</button>
+                <button mat-raised-button color="primary" (click)="nextQuestion(false)">Skip question</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div *ngIf="fin">
+
+    <div class="text-center text-decoration-underline">
+        <h1>Results</h1>
+    </div>
+
+    <div class="text-center">
+        <h2>Final Score: {{puntuacion}}</h2>
+    </div>
+
+    <div>
+        <img class="imagenTrofeo rounded mx-auto d-block img-thumbnail" *ngIf="respuestasCorrectas==10" src="assets/images/goldMedal.png" alt="Gold medal">
+        <img class="imagenTrofeo rounded mx-auto d-block img-thumbnail" *ngIf="respuestasCorrectas==9" src="assets/images/silverMedal.png" alt="Silver medal">
+        <img class="imagenTrofeo rounded mx-auto d-block img-thumbnail" *ngIf="respuestasCorrectas<9 && respuestasCorrectas>=7" src="assets/images/bronzeMedal.png" alt="Bronze medal"> 
+        
+
+    </div>
+
+    <div class="card">
+        <h3 class="card-header text-center">Summary</h3>
+        <div class="card-body">
+        <div >
+          <h5 class="card-title text-decoration-underline">Lives left </h5>
+        <img class="imagenVida"*ngFor="let imagen of imagenesVidas; let i = index" src="assets/images/vida.png" alt="Vida {{ i + 1 }}">
+        </div>
+          <h5 class="card-title text-decoration-underline">Correct answers </h5>
+          {{respuestasCorrectas}}
+          <h5 class="card-title text-decoration-underline">Wrong answers </h5>
+          {{respuestasIncorrectas}}
+
+
+
+          <p class="card-text">You can see the detailed results on your History.</p>
+          <a href="/home" mat-raised-button color="primary" class="btn btn-primary">Go to Main Menu</a>
+
+        
+        </div>
+      </div>
+    
+</div>

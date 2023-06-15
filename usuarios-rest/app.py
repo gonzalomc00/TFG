@@ -61,9 +61,6 @@ def index():
 def login():
     jon = json.loads(request.data)
     mail = jon["mail"]
-    #Decomentación de la contraseña
-    #password = base64.b64decode(jon["contrasena"]).__str__()[2:-1]
-    #print(password)
     password = jon["contrasena"]
     user = comprobarLogin(mail,password)
     if user != None:
@@ -105,28 +102,6 @@ def registro():
     baseDatos.registrarAlumno(mail,password,name,lastname)
     print("registroOK")
     return Response(status=200)
-    """
-    CODIGO ANTIGUO
-
-    if(comprobarRegistro(mail)):
-   # if(comprobarRegistro(mail) and diccionario.get(mail)==int(codigo)):
-        baseDatos.registrarAlumno(mail,password,name)
-        contenido = {
-            "resultado": "OK"
-        }
-        print("registroOK")
-        response = jsonify(contenido)
-        response.status_code = 200
-        return response
-    else:
-        print("registroERR")
-        contenido = {
-            "resultado": "ERROR"
-        }
-        response = jsonify(contenido)
-        response.status_code = 200
-        return response
-    """
 
 @app.route("/mensaje", methods=['POST'])
 def sendMail():
@@ -402,5 +377,5 @@ def imagenRequest(filename):
 
 if __name__ == '__main__':
     from waitress import serve
-    #app.run(ssl_context=('C://Users/Gonzalo/Desktop/Universidad/app/security/cert.crt', 'C://Users/Gonzalo/Desktop/Universidad/app/security/cert.key'), host='0.0.0.0',port=8384)
+    #app.run(ssl_context=('/var/servers/servicioSidra/certificados2020Node/docentis_inf_um_es.crt', '/var/servers/servicioSidra/certificados2020Node/mydomain.key'), host='0.0.0.0',port=8384)
     app.run(host='127.0.0.1',port=8384,debug=True)

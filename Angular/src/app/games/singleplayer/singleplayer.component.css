@@ -1,0 +1,103 @@
+.bootstrap-timer {
+  color: #303030;
+  background-color: #eee;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 700;
+  font-size: 2rem;
+  
+}
+
+code-input {
+  margin-right: 15px;
+  margin-left: 15px;
+  min-width:50px;
+  
+}
+
+
+
+button {
+  margin-top: 5px;
+  width: 100%
+}
+
+.texto-pregunta {
+  font-size: 1.2vw
+}
+
+img{
+  width: 50%;
+}
+
+.img-pregunta-placeholder{
+  width:40%;
+}
+
+.contenedor-respuesta {
+  margin-top: 10px;
+
+}
+
+
+.contenedor {
+  min-width: 100px;
+ 
+}
+
+.imagenVida {
+  width: 35px;
+}
+
+.imagenTrofeo {
+  width: 150px;
+}
+
+.wrong {
+  --item-background: #FFB2A1
+}
+
+
+
+
+@media (max-width: 820px) {
+
+  .bootstrap-timer {
+    color: #303030;
+    background-color: #eee;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #c9c9c9;
+    border-radius: 8px;
+    display: inline-block;
+    font-weight: 700;
+    font-size: 1rem;
+  
+  }
+
+  .contenedor {
+    flex-direction: column;
+    align-items: center;
+
+  }
+
+  code-input {
+
+    margin-top: 15px;
+    margin-bottom: 15px;
+    --item-height: 1.5em;
+
+  }
+
+  .texto-pregunta {
+    font-size: 3vw;
+  }
+
+  .imagenVida {
+    width: 15px;
+  }
+
+}
