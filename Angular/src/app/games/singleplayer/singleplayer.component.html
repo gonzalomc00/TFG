@@ -20,11 +20,16 @@
 </div>
 
 
-<div id="Question Field" class=" text-center contenedor-pregunta">
-    <div class="texto-pregunta fw-bold text-break">
+<div id="Question Field" class=" text-center contenedor-pregunta border border-dark rounded">
+    <div class="texto-pregunta fw-bold text-break fs-5">
         {{preguntaActual.question}}
     </div>
+    
 
+</div>
+
+
+<div id="ImageField" class="text-center">
     <div *ngIf="preguntaActual.image!=''">
         <img class="img-pregunta" [src]="preguntaActual.image" alt="{{preguntaActual.information}}">
     </div>
@@ -32,9 +37,10 @@
     <div *ngIf="preguntaActual.image==''">
         <img class="img-pregunta-placeholder" src="assets/images/question-placeholder.png" alt="Placeholder image">
     </div>
-    
-
 </div>
+
+
+
 <div id="Response Field" class="contenedor-respuesta" >
    
         <div class="row">
@@ -95,7 +101,7 @@
 
 
           <p class="card-text">You can see the detailed results on your History.</p>
-          <a href="/home" mat-raised-button color="primary" class="btn btn-primary">Go to Main Menu</a>
+          <button  mat-raised-button color="primary" class="btn btn-primary" [routerLink]="['/home']">Go to Main Menu</button>
 
         
         </div>
