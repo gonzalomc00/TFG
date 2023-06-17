@@ -148,13 +148,8 @@
     </div>
 
     <div id="ImageField" class="text-center">
-        <div *ngIf="pregunta.image!=''">
-            <img [src]="pregunta.image" [alt]="pregunta.information">
-        </div>
-
-        <div *ngIf="pregunta.image==''">
-            <img class="img-pregunta-placeholder" src="assets/images/question-placeholder.png" alt="Placeholder image">
-        </div>
+        <img class="img-pregunta"   *ngIf="pregunta.image!=''" [src]="pregunta.image" alt="{{pregunta.information}}">
+        <img class="img-pregunta" *ngIf="pregunta.image==''" src="assets/images/question-placeholder.png" alt="Placeholder image">
     </div>
 
     <div id="Response Field" class="contenedor-respuesta">

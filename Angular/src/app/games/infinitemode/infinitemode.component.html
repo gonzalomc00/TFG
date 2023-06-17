@@ -20,7 +20,7 @@
     
     
     <div id="Question Field" class=" text-center contenedor-pregunta border border-dark rounded">
-        <div class="texto-pregunta fw-bold text-break fs-5">
+        <div class="texto-pregunta fw-bold text-break ">
             {{preguntaActual.question}}
         </div>
 
@@ -29,13 +29,10 @@
 
 
     <div id="ImageField" class="text-center">
-        <div *ngIf="preguntaActual.image!=''">
-            <img class="img-pregunta" [src]="preguntaActual.image" alt="{{preguntaActual.information}}">
-        </div>
-        
-        <div *ngIf="preguntaActual.image==''">
-            <img class="img-pregunta-placeholder" src="assets/images/question-placeholder.png" alt="Placeholder image">
-        </div>
+       
+            <img class="img-pregunta"   *ngIf="preguntaActual.image!=''" [src]="preguntaActual.image" alt="{{preguntaActual.information}}">
+            <img class="img-pregunta" *ngIf="preguntaActual.image==''" src="assets/images/question-placeholder.png" alt="Placeholder image">
+
     </div>
 
     <div id="Response Field" class="contenedor-respuesta" >
@@ -50,9 +47,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-2 contenedor-controles">
                     <button mat-raised-button color="primary" (click)="sendResults()">Send answer</button>
-                    <button mat-raised-button color="primary" (click)="nextQuestion(false)">Skip question</button>
+                    <button mat-raised-button color="warn" (click)="nextQuestion(false)">Skip question</button>
                 </div>
             </div>
     

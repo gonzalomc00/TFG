@@ -28,12 +28,9 @@ button {
 }
 
 .texto-pregunta {
-  font-size: 1.2vw
+  font-size: 1.2em
 }
 
-img{
-  width: 50%;
-}
 
 
 
@@ -46,15 +43,18 @@ img{
   background-color: 	#EEEDED;
   width: 100%; /* Ocupa el ancho completo del contenedor padre */
   height: 30vw; /* Alto del contenedor: 50% del ancho visible del dispositivo */
-  overflow: hidden; /* Oculta cualquier parte de la imagen que exceda el tamaño del contenedor */
-
+  overflow: hidden;
 }
 
-#ImageField img{
-  width: 100%; /* Ocupa todo el ancho del contenedor */
-  height: 100%; /* Ocupa todo el alto del contenedor */
-  object-fit: cover; /* Ajusta la imagen manteniendo su relación de aspecto y cubriendo todo el contenedor */
+.img-pregunta{
+  width: 100%;
+  max-height: 100%;
+  object-fit: scale-down;
+  object-position:center;
+  
 }
+
+
 
 .contenedor {
   min-width: 100px;
@@ -99,22 +99,33 @@ img{
   
   }
 
+  #ImageField {
+    background-color: 	#EEEDED;
+    width: 100%; /* Ocupa el ancho completo del contenedor padre */
+    height: 30vw; /* Alto del contenedor: 50% del ancho visible del dispositivo */
+    overflow: hidden;
+  }
+
   .contenedor {
     flex-direction: column;
     align-items: center;
 
   }
 
+  .contenedor-controles button{
+    width:48%;
+    margin-right: 5px;
+  }
   code-input {
 
     margin-top: 15px;
     margin-bottom: 15px;
-    --item-height: 1.5em;
+    --item-height: 1.3em;
 
   }
 
   .texto-pregunta {
-    font-size: 3vw;
+    font-size: 0.9em;
   }
 
   .imagenVida {
