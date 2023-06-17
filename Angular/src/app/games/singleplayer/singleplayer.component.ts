@@ -215,12 +215,13 @@ export class SingleplayerComponent implements OnInit {
     if (this.respuestasCorrectas == 10) {
       this.user!.vitrina!.medallaOro! = this.user!.vitrina!.medallaOro! + 1
     } else if (this.respuestasCorrectas == 9) {
-      this.user!.vitrina!.medallaPlata != this.user!.vitrina!.medallaPlata! + 1
+      this.user!.vitrina!.medallaPlata! = this.user!.vitrina!.medallaPlata! + 1
     } else if (this.respuestasCorrectas < 9 && this.respuestasCorrectas >= 7) {
-      this.user!.vitrina!.medallaBronce != this.user!.vitrina!.medallaBronce! + 1
+      this.user!.vitrina!.medallaBronce! = this.user!.vitrina!.medallaBronce! + 1
     }
-    this.user!.vitrina!.numPartidas=this.user!.vitrina!.numPartidas+1
 
+
+    this.user!.vitrina!.numPartidas=this.user!.vitrina!.numPartidas+1
     this.auth.updateUser(this.user!)
 
 
