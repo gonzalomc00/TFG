@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "source-map-explorer": "source-map-explorer dist/prototipo/**/*.js"
   },
   "private": true,
   "dependencies": {
@@ -25,8 +26,6 @@
     "angular-code-input": "^1.6.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.3",
-    "crypto-browserify": "^3.12.0",
-    "moment": "^2.29.4",
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.6.1",
     "tslib": "^2.3.0",
