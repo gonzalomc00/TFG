@@ -1,12 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import * as moment from 'moment';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameRecord } from 'src/app/interfaces/gameRecord';
 import { Question } from 'src/app/interfaces/question';
 import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
-import QuestionService from 'src/app/services/question.service';
 import { UserService } from 'src/app/services/user.service';
 import { VentanaFinPreguntaComponent } from '../ventana-fin-pregunta/ventana-fin-pregunta.component';
 

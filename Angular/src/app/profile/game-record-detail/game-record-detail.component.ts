@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
 import { GameRecord } from 'src/app/interfaces/gameRecord';
 import { UserService } from 'src/app/services/user.service';
 import { Location } from '@angular/common'

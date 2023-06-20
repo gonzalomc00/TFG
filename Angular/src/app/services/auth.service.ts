@@ -5,7 +5,7 @@ import {  BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { User } from '../interfaces/user';
 import { ImageService } from './image.service';
-import { HashService } from './hash.service';
+
 
 @Injectable({
   providedIn: 'root'

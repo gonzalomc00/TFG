@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component,OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { GameRecord } from 'src/app/interfaces/gameRecord';
 import { Question } from 'src/app/interfaces/question';
 import { User } from 'src/app/interfaces/user';

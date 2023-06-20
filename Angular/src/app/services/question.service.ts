@@ -6,7 +6,7 @@ import { Observable, map, tap } from 'rxjs';
 import { Question } from '../interfaces/question';
 import { Temas } from '../interfaces/temas';
 import { Game } from '../interfaces/game';
-import { GameRecord } from '../interfaces/gameRecord';
+
 
 @Injectable({
   providedIn: 'root'

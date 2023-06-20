@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable} from 'rxjs';
 import { environment } from '../environments/environment';
 import { User } from '../interfaces/user';
 import { ImageService } from './image.service';

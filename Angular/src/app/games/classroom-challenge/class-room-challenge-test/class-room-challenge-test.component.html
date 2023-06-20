@@ -163,9 +163,10 @@
                             (codeChanged)="onCodeChanged($event,palabra.posicion)">
                         </code-input>
                     </div>
-                    <div *ngIf="preguntaTerminada" style="text-align:center">
-                        <p class="fs-5 fw-bold">{{pregunta.answer}} </p>
-                    </div>
+                </div>
+
+                <div class="text-center"  *ngIf="preguntaTerminada">
+                    <p class="fs-3 text-center"><strong>Correct answer: </strong>{{pregunta.answer}} </p>
                 </div>
             </div>
             <div class="col-lg-2">
