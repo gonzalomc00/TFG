@@ -52,7 +52,7 @@ export class RegisterComponent{
     password: ['', Validators.required],
     passConfirmation: ['', Validators.required],
   });
-  
+
 
   constructor(private _formBuilder: FormBuilder, private auth: AuthService,private mailService: MailService, private hashService:HashService){}
 
@@ -72,13 +72,13 @@ export class RegisterComponent{
     this.hashService.hashPassword(this.pass)
     .then(hashedPassword => {
       this.auth.register(this.email,this.name,this.lastname,hashedPassword).subscribe({
-        next: (response) => {
+        next: () => {
           this.isEditable=false;
         },
         error: (error: any) => console.log(error)
-      }) 
+      })
     })
-   
+
   }
 
   validatePassword(){
@@ -93,9 +93,9 @@ export class RegisterComponent{
       this.isValidated= this.pass===this.passConfirmation;
     }
 
-    //Comprobamos todas las condiciones al mismo tiempo para dar paso 
+    //Comprobamos todas las condiciones al mismo tiempo para dar paso
     this.passEnabled= this.hasLowerCase && this.hasMinimumLength &&
-    this.hasUpperCase && this.hasNumber && this.hasNonAlphaNumeric 
+    this.hasUpperCase && this.hasNumber && this.hasNonAlphaNumeric
     && this.isValidated
   }
 
@@ -103,39 +103,39 @@ export class RegisterComponent{
     this.email=this.firstFormGroup.get('email')?.value!
 
     this.auth.comprobarMail(this.email).subscribe({
-      next: (response) => {
-  
+      next: () => {
+
         this.mailEnabled=false;
         this.mailWarningEnabled=false;
       },
-      error: (error: any) => {
-        
+      error: () => {
+
         this.mailWarningEnabled=true
         this.mailEnabled=true;
       }
-    }) 
+    })
   }
 
   enviarCodigo(){
     this.mailService.enviarCorreoCodigo(this.email).subscribe({
-      error: (error: any) => {
-   
+      error: () => {
+
       }
-    }) 
+    })
   }
 
     // this called only if user entered full code
     onCodeCompleted(code: string) {
       this.mailService.comprobarCodigo(this.email,code).subscribe({
-        next: (response) => {
+        next: () => {
             this.codeValidation=true;
-        
+
         },
-        error: (error: any) => {
+        error: () => {
           this.codeValidation=false
 
         }
-      }) 
+      })
     }
 
   }

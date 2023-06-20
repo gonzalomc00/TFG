@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { ImageService } from './image.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map} from 'rxjs';
 import { Question } from '../interfaces/question';
 import { Temas } from '../interfaces/temas';
 import { Game } from '../interfaces/game';
@@ -12,7 +12,7 @@ import { Game } from '../interfaces/game';
   providedIn: 'root'
 })
 export default class QuestionService {
-  
+
 
   private apiUrl=environment.preguntasApi;
 
@@ -65,7 +65,7 @@ export default class QuestionService {
   }
 
   getTemas():Observable<Temas>{
-    return this.http.get<Temas>(`${this.apiUrl}/temas`); 
+    return this.http.get<Temas>(`${this.apiUrl}/temas`);
   }
 
   updateTemas(temas:Temas): Observable<any>{

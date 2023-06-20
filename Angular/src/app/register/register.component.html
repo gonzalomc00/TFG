@@ -1,6 +1,6 @@
 
 
-<mat-stepper #stepper linear>
+<mat-stepper  linear>
     <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
         <div class="card flex ">
             <div class="card-body">
@@ -37,19 +37,22 @@
                 <p class="card-title text-center fs-2">Enter your code</p>
                 <h6 class="card-subtitle mb-2 text-muted">A code has been sent to the email address introduced in the previous step. Please, write it down below.</h6>
                 <hr>
-                
+                <label>
+                    <span>Label Text</span>
                     <code-input style="margin-bottom: 10px;"[isCodeHidden]="false" [codeLength]="5"
                     (codeCompleted)="onCodeCompleted($event)">
                     </code-input>
+                  </label>
+                    
 
-                    <button mat-button color="accent" (click)="enviarCodigo()" style="margin-bottom: 10px;">Resend code</button>
+                    <button mat-raised-button color="accent" (click)="enviarCodigo()" style="margin-bottom: 10px;">Resend code</button>
 
                     <div>
                         <button mat-raised-button color="primary" matStepperNext
                             style="margin-right: 10px" [disabled]="!codeValidation">Next</button>
                         <button mat-stroked-button matStepperPrevious>Back</button>
                     </div>
-            
+
             </div>
         </div>
     </mat-step>

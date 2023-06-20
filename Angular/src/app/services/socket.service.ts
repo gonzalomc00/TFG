@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import io from 'socket.io-client';
 import { Question } from '../interfaces/question';
-import { Observable,map,pipe } from 'rxjs';
+import { Observable} from 'rxjs';
 import { ImageService } from './image.service';
 import { environment } from '../environments/environment';
 
@@ -17,7 +17,7 @@ export class SocketService {
 
   private socket = io(this.apiUrl,{forceNew: true})
 
- 
+
   public crearSala(user: string,codigo:number) {
     this.socket.emit('crearSala', user,codigo);
   }
@@ -37,8 +37,9 @@ export class SocketService {
   public recibirPregunta(): Observable<Question>{
     return new Observable((observer)=>{
       this.socket.on('preguntaJuego',(pregunta:Question)=>{
+        let valorReturn;
         if(pregunta!=null){
-        var valorReturn;
+    
         valorReturn={
           _id: pregunta._id,
           question: pregunta.question,
@@ -56,10 +57,6 @@ export class SocketService {
 
   public siguientePregunta(sala: string) {
     this.socket.emit('siguientePregunta',sala)
-  }
-
-  public enviarRespuesta(respuesta: string) {
-    this.socket.emit('nuevaRespuesta', respuesta);
   }
 
   public terminarPregunta(sala:string){

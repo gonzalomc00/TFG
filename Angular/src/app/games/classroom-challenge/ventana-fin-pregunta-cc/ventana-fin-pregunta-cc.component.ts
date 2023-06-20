@@ -12,9 +12,7 @@ export class VentanaFinPreguntaCCComponent {
     public dialogo: MatDialogRef<VentanasConfirmacionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-    cerrarDialogo(): void {
-      this.dialogo.close(false);
-    }
+
     confirmado(): void {
       this.dialogo.close(true);
     }

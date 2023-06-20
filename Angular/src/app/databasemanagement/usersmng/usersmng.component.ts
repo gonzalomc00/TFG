@@ -21,8 +21,6 @@ export class UsersmngComponent implements OnInit {
   dataSorted: MatTableDataSource<User>
   @ViewChild(MatSort) sort:MatSort
   @ViewChild(MatPaginator) paginator:MatPaginator
-  showOnlyActive: boolean;
-  
 
   constructor (private userService: UserService, public dialog:MatDialog){
 
@@ -30,12 +28,12 @@ export class UsersmngComponent implements OnInit {
 
   //Aqui dentro obtenemos los datos y encendemos el sorter
   ngOnInit(): void {
-  
+
      this.userService.getAlumnos().subscribe({
       next: (results: any) => {
         this.dataSource=results
         this.dataSorted = new MatTableDataSource(this.dataSource);
-        this.dataSorted.sort = this.sort; 
+        this.dataSorted.sort = this.sort;
         this.dataSorted.paginator=this.paginator
 
       },
@@ -54,8 +52,8 @@ export class UsersmngComponent implements OnInit {
       this.dataSorted.paginator.firstPage();
     }
   }
-  
-  
+
+
   changeToProfessor(user:User){
     this.dialog
     .open(VentanasConfirmacionComponent, {
@@ -65,13 +63,13 @@ export class UsersmngComponent implements OnInit {
     .subscribe((confirmado: Boolean) => {
       if (confirmado) {
         this.userService.changeToProfessor(user).subscribe({
-          next: (results:any)=>{
+          next: ()=>{
             this.dataSource = this.dataSource.filter(item => item !== user);
             this.dataSorted.data=this.dataSource;
           }
         })
       }
-    
+
     })
   }
 
@@ -84,13 +82,13 @@ export class UsersmngComponent implements OnInit {
     .subscribe((confirmado: Boolean) => {
       if (confirmado) {
         this.userService.deleteUser(user._id).subscribe({
-          next:(results:any)=>{
+          next:()=>{
             this.dataSource = this.dataSource.filter(item => item !== user);
             this.dataSorted.data=this.dataSource;
           }
         })
       }
-    
+
     })
   }
 

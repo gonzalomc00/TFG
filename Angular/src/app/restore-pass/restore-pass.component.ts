@@ -53,21 +53,21 @@ export class RestorePassComponent {
   public enviarCodigo() {
     this.checkIn = true;
     this.mailService.enviarCorreoCambioCont(this.emailFormControl.value!).subscribe({
-      error: (error: any) => {
-   
+      error: () => {
+
       }
     })
   }
 
   onCodeCompleted(code: string) {
     this.mailService.comprobarCodigo(this.emailFormControl.value!, code).subscribe({
-      next: (response) => {
+      next: () => {
         this.codeValidation = true;
-     
+
       },
-      error: (error: any) => {
+      error: () => {
         this.codeValidation = false
-      
+
       }
     })
   }
@@ -89,9 +89,9 @@ export class RestorePassComponent {
       this.isValidated= this.pass===this.passConfirmation;
     }
 
-    //Comprobamos todas las condiciones al mismo tiempo para dar paso 
+    //Comprobamos todas las condiciones al mismo tiempo para dar paso
     this.passEnabled= this.hasLowerCase && this.hasMinimumLength &&
-    this.hasUpperCase && this.hasNumber && this.hasNonAlphaNumeric 
+    this.hasUpperCase && this.hasNumber && this.hasNonAlphaNumeric
     && this.isValidated
   }
 
@@ -100,13 +100,13 @@ export class RestorePassComponent {
     this.hashService.hashPassword(this.pass)
     .then(hashedPassword => {
       this.auth.changePass(this.emailFormControl.value!,hashedPassword).subscribe({
-        next: (response) => {
+        next: () => {
           this.modo="modo3"
         },
         error: (error: any) => console.log(error)
       })
     })
- 
+
   }
 
 

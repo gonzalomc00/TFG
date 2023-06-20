@@ -12,13 +12,12 @@ import { HashService } from '../services/hash.service';
 export class LoginComponent {
   email: string;
   password: string;
-  modo:string="login"
   errorLogin:boolean=false
 
   constructor(private userService: UserService, private auth: AuthService
-    ,private route: ActivatedRoute,private router:Router, private hashService: HashService){
+    ,private route: ActivatedRoute,private router:Router){
 
-      if (this.auth.userValue) { 
+      if (this.auth.userValue) {
         this.router.navigate(['/home']);
 
   }
@@ -27,22 +26,22 @@ export class LoginComponent {
 
   login(){
 
-    
+
     this.auth.signin(this.email,this.password).subscribe({
-      next: (response) => {
+      next: () => {
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
         this.router.navigate([returnUrl]);
-   
-      },
-      error: (error: any) => this.errorLogin=true,
 
-    }) 
+      },
+      error: () => this.errorLogin=true,
+
+    })
   }
-  
+
   register(){
     this.router.navigate(['register'])
   }
-  
+
 
 }
 

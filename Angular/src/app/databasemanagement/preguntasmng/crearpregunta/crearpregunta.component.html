@@ -73,6 +73,7 @@
                     <div class="col-lg-8" style="margin-left:15px">
                         <h5><label class="" for="Name">Image</label></h5>
                         <button mat-raised-button color="primary" style="margin-right:15px" *ngIf="isFile" (click)="eliminarFoto()">Delete image</button>
+                        <label for="file" style="display:none">Select a picture for the question</label>
                         <input (change)="onFileSelected($event)" type="file" id="file">
                        
                     </div>

@@ -84,7 +84,7 @@ export class PreguntasmngComponent implements OnInit {
 
 
   customFiltered() {
-    return (data, filter) => {
+    return (data) => {
       if (this.respFilter) {
         if (this.topicFilter && this.countryFilter)
           return data.topic == this.topicFilter && data.country == this.countryFilter && data.answer.includes(this.respFilter)
@@ -127,7 +127,7 @@ export class PreguntasmngComponent implements OnInit {
       .subscribe((confirmado: Boolean) => {
         if (confirmado) {
           this.questionS.deleteQuestion(question._id).subscribe({
-            next: (results: any) => {
+            next: () => {
               this.dataSource = this.dataSource.filter(item => item !== question);
               this.dataSorted.data = this.dataSource;
             }
@@ -180,13 +180,13 @@ export class PreguntasmngComponent implements OnInit {
 
     if(this.preguntasIn!=0){
     this.questionS.createGame(this.nombreJuego, ids_preguntas).subscribe({
-      next: (results: any) => {
+      next: () => {
         this.dialog
           .open(VentanaExitoComponent, {})
           .afterClosed()
-          .subscribe((confirmado: Boolean) => {
+          .subscribe(() => {
               this.router.navigate(['databaseManagement'])
-            
+
           })
       }
     })

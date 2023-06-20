@@ -30,9 +30,9 @@ export class GamesmngComponent implements OnInit {
       next: (response:any) =>{
           this.dataSource=response
           this.dataSorted = new MatTableDataSource(this.dataSource);
-          this.dataSorted.sort = this.sort; 
+          this.dataSorted.sort = this.sort;
           this.dataSorted.paginator=this.paginator
-          
+
       }
     }
     )
@@ -45,19 +45,19 @@ export class GamesmngComponent implements OnInit {
       this.dataSorted.paginator.firstPage();
     }
   }
-  
+
   changeStatus(element, status_updt){
 
     element.status=status_updt;
     this.questionS.updateGame(element).subscribe({
-      next: (response:any) =>{
-     
+      next: () =>{
+
       }
     })
   }
 
   deleteGame(element:Game){
-    
+
     this.dialog
       .open(VentanasConfirmacionComponent, {
         data: `Once you delete this game, you will have to create it again later`
@@ -66,7 +66,7 @@ export class GamesmngComponent implements OnInit {
       .subscribe((confirmado: Boolean) => {
         if (confirmado) {
           this.questionS.deleteGame(element._id).subscribe({
-            next: (response:any) =>{
+            next: () =>{
               this.dataSource = this.dataSource.filter(item => item !== element);
               this.dataSorted.data=this.dataSource;
             }

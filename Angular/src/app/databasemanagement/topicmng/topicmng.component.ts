@@ -41,7 +41,7 @@ export class TopicmngComponent implements OnInit {
           {title:"General Knowledge", value:this.temas_response.USA['General Knowledge']},
           {title:"Mix", value:this.temas_response.USA['Mix']},
         ]
-        
+
       }
     })
 
@@ -61,10 +61,10 @@ export class TopicmngComponent implements OnInit {
 
   submit(){
     this.questionS.updateTemas(this.temas_response).subscribe({
-      next: (response:any) => {
+      next: () => {
         this.openSnackBar("topicsUpdated")
       },
-      error:(response:any)=>{
+      error:()=>{
         this.openSnackBar("error")
       }
 
@@ -73,7 +73,7 @@ export class TopicmngComponent implements OnInit {
 
     )
   }
-  
+
   openSnackBar(type:string) {
     switch(type){
       case "error":{

@@ -13,6 +13,7 @@
                             <p class="text-secondary mb-1">{{user!.rol}}</p>
                             <button *ngIf="userActivo" id="ProfileChange" type="button" (click)="fileInput.click()"
                                 mat-button>Change profile picture</button>
+                            <label for="file" style="display:none">Select a profile picture</label>
                             <input hidden #fileInput (change)="onFileSelected($event)" type="file" id="file">
                         </div>
                     </div>

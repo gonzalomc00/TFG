@@ -32,7 +32,6 @@
       <td mat-cell *matCellDef="let element"> 
         <button  mat-icon-button
         (click)="showDetails(element)"
-        #tooltip="matTooltip"
         matTooltip="Show details from the game"
         matTooltipPosition="below"
         aria-label="Button that shows more details about a game">
@@ -42,7 +41,6 @@
 
         <button  *ngIf="element.status=='Closed'" mat-icon-button
         (click)="changeStatus(element,'Opened')"
-        #tooltip="matTooltip"
         matTooltip="Open game"
         matTooltipPosition="below"
         aria-label="Button that opens a game">
@@ -52,7 +50,6 @@
 
         <button  *ngIf="element.status=='Opened'" mat-icon-button
         (click)="changeStatus(element,'Closed')"
-        #tooltip="matTooltip"
         matTooltip="Close game"
         matTooltipPosition="below"
         aria-label="Button that closes a game">
@@ -62,7 +59,6 @@
 
         <button  mat-icon-button
         (click)="deleteGame(element)"
-        #tooltip="matTooltip"
         matTooltip="Delete game"
         matTooltipPosition="below"
         aria-label="Button that deletes a game">

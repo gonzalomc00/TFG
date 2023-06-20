@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
   Resolve,
-  RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable} from 'rxjs';
 import QuestionService from './question.service';
 
 //Este Resolver evitará cargar una pagina HTML hasta que tengamos la respuesta
@@ -13,13 +12,13 @@ import QuestionService from './question.service';
 
 @Injectable({providedIn: 'root'})
 export class QuestionResolver implements Resolve<Response> {
- 
+
   constructor(private questionS: QuestionService){
 
   }
- 
-  //Queremos decirle a nuestra app que no vaya a la vista hasta que no se resuelva el resolver 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Response> {
+
+  //Queremos decirle a nuestra app que no vaya a la vista hasta que no se resuelva el resolver
+  resolve(route: ActivatedRouteSnapshot): Observable<Response> {
     return this.questionS.getQuestionsSinglePlayer(route.queryParams['pais'],route.queryParams['categoria'])
   }
 }

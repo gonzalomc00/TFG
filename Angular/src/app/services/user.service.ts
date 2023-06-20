@@ -8,9 +8,7 @@ import { GameRecord } from '../interfaces/gameRecord';
 
 
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+
 
 @Injectable({
   providedIn: 'root'
@@ -48,21 +46,6 @@ export class UserService {
         history: user.history
       }))
     )
-  }
-
-  getUsers(): Observable<User[]>{
-
-    return this.http.get<User[]>(`${this.apiUrl}/usuarios`)
-    .pipe(
-        map(users =>users.map(user =>({
-          _id: user._id,
-           rol: user.rol,
-           correo: user.correo,
-           nombre: user.nombre,
-           lastname: user.lastname,
-           image: this.imageService.obtenerImagen(user)
-
-      })))) ;
   }
 
 

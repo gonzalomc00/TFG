@@ -8,7 +8,7 @@ import { UserService } from '../services/user.service';
 import { GameRecord } from '../interfaces/gameRecord';
 
 interface Trophy {
-  title: String; content: String; img: String, number: number, 
+  title: String; content: String; img: String, number: number,
 }
 interface Achievement {
   title: String; content: String; img: String, condicion:boolean
@@ -77,7 +77,7 @@ ngOnInit(): void {
     condicion:(this.user?.vitrina?.trofeoBronce!=0)},
     { title: 'Unstoppable', content: 'Earn 15 points in a single game of Infinite Mode', img: "assets/images/unstoppable.png",
     condicion: (this.user?.vitrina?.recordInfinito! >=15 )},
-    { title: 'Honor Student', content: 'Win 30 medals (gold,silver and bronze) in Single Player Mode', img: "assets/images/honourStudent.png" , 
+    { title: 'Honor Student', content: 'Win 30 medals (gold,silver and bronze) in Single Player Mode', img: "assets/images/honourStudent.png" ,
     condicion: (this.user?.vitrina?.medallaOro! +this.user?.vitrina?.medallaPlata! +this.user?.vitrina?.medallaBronce!) >=30},
     { title: 'Gold Rush', content: 'Earn 30 gold medals in Single Player Mode', img: "assets/images/gold.png",
     condicion: (this.user?.vitrina?.medallaOro! >=30 ) },
@@ -85,13 +85,13 @@ ngOnInit(): void {
     condicion: (this.user?.vitrina?.medallaOro! >=60 && this.user?.vitrina?.recordInfinito! >=20)},
     { title: 'Queen of the United Kingdom award', content: 'Earn 1 gold trophy, 20 points in Infinite Mode and 60 gold medalds', img:"assets/images/queen.png",
     condicion:(this.user?.vitrina?.trofeoOro!=0 && this.user?.vitrina?.recordInfinito!>=20 && this.user?.vitrina?.medallaOro!>=60)}
-  
+
   ];
 
 }
 
   onFileSelected(event:any):void{
-  
+
     this.selectedFile = event.target.files[0] ?? null;
 
     const formData= new FormData();
@@ -104,8 +104,8 @@ ngOnInit(): void {
         this.auth.updateUser(this.user!)
         this.openSnackBar("profileUpdated")
       },
-      error: (error: any) => this.openSnackBar("error"),
-    }) 
+      error: () => this.openSnackBar("error"),
+    })
   }
 
 
@@ -136,6 +136,6 @@ cambioModo(modo:boolean){
 public enterData(gameRecord){
   this.userService.setRecord(gameRecord)
   this.router.navigateByUrl('gameRecordDetails')
-  
+
 }
 }

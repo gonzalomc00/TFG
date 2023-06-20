@@ -35,7 +35,6 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
   user?: User | null
   codigo: any;
   profesor: boolean = false
-  inicioJuego: boolean = false
 
 
   //VARIABLES DEL JUEGO
@@ -73,7 +72,7 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
     if(this.sala!=undefined){
       this.socketService.salirSala(this.sala.id,this.user!.correo); // Envía una señal al servidor antes de cerrar la pestaña o cambiar de vista
     }
-  
+
   }
 
 
@@ -91,9 +90,9 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
     }
 
     this.socketService.recibirSala().subscribe((info) => {
-  
+
       if(info==undefined){
-        
+
         this.errorSala=true
       }
       else{
@@ -106,11 +105,11 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
           this.tiempo=this.sala.timer
         }
       }
-   
+
 
     });
 
-    this.socketService.mostrarResultado().subscribe((info) => {
+    this.socketService.mostrarResultado().subscribe(() => {
       this.construirHistorial();
 
       if(this.timerEnabled){
@@ -125,44 +124,44 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
     })
 
     this.socketService.recibirGanador().subscribe((info) => {
-  
+
       this.clasification=info
       this.winner=this.clasification[0]
       this.estado='finPartida'
         this.terminarPartida();
-      
-  
+
+
 
     })
 
 
     this.socketService.recibirPregunta().subscribe((info) => {
       this.dialog.closeAll();
- 
+
       if(info!=undefined){
       this.acumulado=0;
       this.pregunta = info;
       this.estado = 'enPartida';
       this.correcto = true;
-     
+
       if (this.indicePregunta != 0) {
         this.preguntaTerminada=false
         if(this.timerEnabled){
           this.temporizador.reset()
           this.temporizador.start()
         }
-       
+
       }
-      
+
         this.actualizarPregunta()
       }
       else{
         if(this.user?.rol=='Student'){
           this.socketService.enviarResultado(this.user?.correo!,this.puntuacion,this.sala.id)
         }
-    
+
       }
-      
+
     })
   }
 
@@ -185,7 +184,7 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
     else{
       this.socketService.entrarSala(this.user!.correo!, this.codigoSala)
     }
-    
+
   }
 
   public empezarJuego() {
@@ -204,7 +203,7 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
     else{
       this.socketService.updateTimer(this.sala.id,-1)
     }
-  
+
   }
 
   //METODOS DEL JUEGO
@@ -217,7 +216,7 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
       answer: this.respuesta.join(" ")
     }
     this.gameRecord.answers.push(entrada);
-   
+
 
   }
 
@@ -234,9 +233,9 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
     if(this.timerEnabled){
       this.acumulado=this.temporizador.get().seconds
       this.temporizador.stop()
-  
+
     }
-    
+
   }
 
   timeOut() {
@@ -267,7 +266,7 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
       counter++;
     }
 
- 
+
     this.numeroPalabras = palabrasFiltradas.length;
   }
 
@@ -276,7 +275,7 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
     if(this.timerEnabled){
       this.temporizador.stop();
     }
-   
+
     let correct = true
 
     //COMPROBAMOS LA RESPUESTA
@@ -298,14 +297,14 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
     }
 
 
-    
+
     this.dialog.closeAll()
     this.dialog
       .open(VentanaFinPreguntaCCComponent, {
         data: {
           resultado: resultado,
           correctAns:this.pregunta.answer,
-          score:10+this.acumulado 
+          score:10+this.acumulado
          },
         disableClose: true
       })
@@ -327,13 +326,13 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
     const posicion = this.clasification.findIndex(objeto => objeto.nombre === this.user?.correo);
 
     if(posicion==0){
-      this.user!.vitrina!.trofeoOro! = this.user!.vitrina!.trofeoOro! + 1    
+      this.user!.vitrina!.trofeoOro! = this.user!.vitrina!.trofeoOro! + 1
     }
     else if(posicion==1){
-      this.user!.vitrina!.trofeoPlata! = this.user!.vitrina!.trofeoPlata! + 1    
+      this.user!.vitrina!.trofeoPlata! = this.user!.vitrina!.trofeoPlata! + 1
     }
     else if(posicion==2){
-      this.user!.vitrina!.trofeoBronce!=this.user!.vitrina!.trofeoBronce!+1
+      this.user!.vitrina!.trofeoBronce! = this.user!.vitrina!.trofeoBronce!+1
     }
 
     if(this.user?.rol=='Teacher'){

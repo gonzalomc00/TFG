@@ -27,8 +27,6 @@ logout() {
 openDialog() {
   const dialogRef = this.dialog.open(VentanaInformacionComponent);
 
-  dialogRef.afterClosed().subscribe(result => {
-  });
 }
 }
 

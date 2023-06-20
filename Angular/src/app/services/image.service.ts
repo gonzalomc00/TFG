@@ -13,9 +13,8 @@ export class ImageService {
   private apiUrl=environment.userApi;
   private apiQuestionsUrl=environment.preguntasApi;
   private profileDefault="https://robohash.org/"
-  imageToShow:any;
-  
-  constructor(private http: HttpClient) { 
+
+  constructor(private http: HttpClient) {
   }
 
   uploadFile(formData:FormData,user:User): Observable<any>{

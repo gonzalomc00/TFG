@@ -14,7 +14,7 @@ export class CrearpreguntaComponent {
 
   textoSuperior:string;
   textoBoton:string;
-  editing:boolean  
+  editing:boolean
   form:FormGroup;
   preQuestion:Question;
   country: string;
@@ -24,10 +24,10 @@ export class CrearpreguntaComponent {
   selectedFile: any;
   isFile:boolean =false
   imageURL:string //preview de la imagen
-  
+
   information:string;
   constructor(private _formBuilder: FormBuilder, private questionS: QuestionService,private router:Router,private arouter: ActivatedRoute){
-    
+
   }
 
 
@@ -43,14 +43,14 @@ export class CrearpreguntaComponent {
           information:[this.preQuestion.information]
 
         })
-       
+
         if(this.preQuestion.image!=""){
         this.imageURL=this.preQuestion.image!;
         this.isFile=true;
-        this.form.get('information')?.enable()   
+        this.form.get('information')?.enable()
         }
         else{
-          this.form.get('information')?.disable()  
+          this.form.get('information')?.disable()
         }
         this.editing=true;
         this.textoSuperior="Edit question"
@@ -64,14 +64,14 @@ export class CrearpreguntaComponent {
           answer:['',Validators.required],
           information:['']
       })
-      this.form.get('information')?.disable()  
+      this.form.get('information')?.disable()
       this.textoSuperior="Create a question"
       this.textoBoton="Create"
       this.editing=false;
     }});
 
-  
-   
+
+
   }
 
 
@@ -84,10 +84,10 @@ export class CrearpreguntaComponent {
       this.imageURL = reader.result as string; // base64 Image src
     };
     this.isFile=true;
-    this.form.get('information')?.enable()   
+    this.form.get('information')?.enable()
 
   }
-  
+
   eliminarFoto(){
     this.selectedFile=null
     this.isFile=false;
@@ -118,7 +118,7 @@ export class CrearpreguntaComponent {
 
     if(!this.editing){
     this.questionS.addQuestion(formData).subscribe({
-      next: (response) => {
+      next: () => {
         this.router.navigate(['databaseManagement'])
       },
       error: (error: any) => console.log(error),
@@ -129,18 +129,15 @@ export class CrearpreguntaComponent {
 
   else{
     this.questionS.editQuestion(this.preQuestion._id,formData).subscribe({
-      next:(response) =>{
+      next:() =>{
         this.router.navigate(['databaseManagement'])
       },
       error: (error:any) => console.log(error)
     })
 
   }
-    } 
-
-    editQuestion(){
-      this.preQuestion
     }
 
-  
+
+
 }

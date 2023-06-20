@@ -10,7 +10,7 @@
   <form [formGroup]="form">
  <div class="row">
   <div class="col-lg-6">
- 
+
     <mat-form-field class="inputForm">
       <mat-label>Game's name</mat-label>
       <input  matInput formControlName="name">
@@ -19,11 +19,11 @@
   <div class="col-lg-6">
     <button mat-raised-button (click)="createGame()" [disabled]="form.invalid" color="primary" id="btnCrear">Create game</button>
   </div>
- </div> 
- 
+ </div>
 
 
- 
+
+
 </form>
 
 <mat-divider style="margin-top: 15px; margin-bottom: 15px;"></mat-divider>
@@ -54,7 +54,7 @@
 
   <ng-container matColumnDef="Image">
     <th mat-header-cell *matHeaderCellDef> Image </th>
-    <td mat-cell *matCellDef="let element"> <img width="75" [src]="element.image"> </td>
+    <td mat-cell *matCellDef="let element"> <img width="75" [src]="element.image" alt=""> </td>
   </ng-container>
 
   <ng-container matColumnDef="Information">
@@ -64,10 +64,10 @@
 
   <ng-container matColumnDef="Options">
     <th mat-header-cell *matHeaderCellDef> Options </th>
-    <td mat-cell *matCellDef="let element"> 
+    <td mat-cell *matCellDef="let element">
       <button  mat-icon-button
       (click)="removeQuestionGame(element)"
-      #tooltip="matTooltip"
+
       matTooltip="Remove question from the game"
       matTooltipPosition="below"
       aria-label="Button that removes a question from the game">
@@ -78,7 +78,7 @@
   </ng-container>
 
 
-    
+
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -91,7 +91,7 @@
 </div>
 
 
-<div>  
+<div>
   <button *ngIf="!gameCreation" mat-raised-button style=" margin-right: 10px;"[routerLink]="['/databaseManagement/crearPregunta']"  class="btnCrear" color="primary"><mat-icon>add</mat-icon> Create new question</button>
 
   <button mat-raised-button class="btnCrear" color="primary" (click)="clearFilters()"><mat-icon>cleaning_services</mat-icon>Clear all filters</button>
@@ -102,7 +102,7 @@
   <div class="col-lg-12">
     <mat-form-field class="filter">
       <mat-label>Filter by answer</mat-label>
-      <input [(ngModel)]="respFilter" matInput (keyup)="applyFilter(countryFilter,topicFilter,respFilter)" placeholder="Filter by any attribute..." #input>
+      <input [(ngModel)]="respFilter" matInput (keyup)="applyFilter(countryFilter,topicFilter,respFilter)" placeholder="Filter by any attribute...">
     </mat-form-field>
 </div>
 <div class="row">
@@ -115,7 +115,7 @@
       <mat-option value="USA">USA</mat-option>
     </mat-select>
   </mat-form-field>
-  
+
 </div>
 <div class="col-lg-6">
   <mat-form-field class="filter">
@@ -162,7 +162,7 @@
 
   <ng-container matColumnDef="Image">
     <th mat-header-cell *matHeaderCellDef> Image </th>
-    <td mat-cell *matCellDef="let element"> <img width="75" [src]="element.image"> </td>
+    <td mat-cell *matCellDef="let element"> <img width="75" [src]="element.image"  alt=""> </td>
   </ng-container>
 
   <ng-container matColumnDef="Information">
@@ -172,12 +172,12 @@
 
   <ng-container matColumnDef="Options">
     <th mat-header-cell *matHeaderCellDef> Options </th>
-    <td mat-cell *matCellDef="let element"> 
+    <td mat-cell *matCellDef="let element">
 
       <div *ngIf="!gameCreation">
       <button  mat-icon-button
       (click)="modifyQuestion(element)"
-      #tooltip="matTooltip"
+
       matTooltip="Edit question"
       matTooltipPosition="below"
       aria-label="Button that deletes a user from the database">
@@ -187,7 +187,7 @@
 
       <button  mat-icon-button
       (click)="deleteQuestion(element)"
-      #tooltip="matTooltip"
+
       matTooltip="Delete question"
       matTooltipPosition="below"
       aria-label="Button that deletes a user from the database">
@@ -201,7 +201,7 @@
     <div *ngIf="gameCreation">
       <button  mat-icon-button
       (click)="addQuestion(element)"
-      #tooltip="matTooltip"
+
       matTooltip="Add question to game"
       matTooltipPosition="below"
       aria-label="Button that add question to the game">

@@ -63,11 +63,11 @@ export class SingleplayerComponent implements OnInit {
 
     this.auth.user.subscribe(x => this.user = x)
 
-    
+
     this.gameRecord.gameMode = 'Single Player Mode'
     this.gameRecord.correctAnswers = 0;
     this.gameRecord.answers = [];
- 
+
 
     this.actualizarPregunta()
 
@@ -77,7 +77,7 @@ export class SingleplayerComponent implements OnInit {
       .open(DialogError,{
         disableClose: true
       }).afterClosed()
-      .subscribe(result=>{
+      .subscribe(()=>{
         this.router.navigate(['/games'])
       })
   }
@@ -90,7 +90,7 @@ export class SingleplayerComponent implements OnInit {
 
     this.preguntaActual = this.preguntas[this.indicePregunta]
     this.indicePregunta++;
-  
+
     this.palabras = []
     this.respuesta = []
 
@@ -166,7 +166,7 @@ export class SingleplayerComponent implements OnInit {
       .open(VentanaFinPreguntaComponent, {
         data: {
          resultado: resultado,
-         correctAns:this.preguntaActual.answer 
+         correctAns:this.preguntaActual.answer
         },
         disableClose: true
       })
@@ -225,7 +225,7 @@ export class SingleplayerComponent implements OnInit {
 
     this.gameRecord.correctAnswers = this.respuestasCorrectas
     this.gameRecord.fecha=new Date().toString()
-    
+
     this.user?.history?.push(this.gameRecord)
     this.auth.updateUser(this.user!)
     this.userS.sendGameResults(this.user?._id!,this.gameRecord).subscribe()
@@ -253,5 +253,5 @@ export class SingleplayerComponent implements OnInit {
 export class DialogError{
 
   constructor(public dialogRef: MatDialogRef<DialogError>) {}
-  
+
 }

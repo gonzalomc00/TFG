@@ -44,9 +44,13 @@
                 <div class="row">
                 <div class=" d-flex contenedor">
                     <div *ngFor="let palabra of palabras">
-                            <code-input  inputType="text" [ngClass]="{'wrong': !correcto}"  [isCodeHidden]="false" [isCharsCode]="true" [codeLength]="palabra.longitud"
+                        <label>
+                            <span style="display:none">Word of answer input</span>
+                            <code-input inputType="text" [ngClass]="{'wrong': !correcto}"  [isCodeHidden]="false" [isCharsCode]="true" [codeLength]="palabra.longitud"
                             (codeChanged)="onCodeChanged($event,palabra.posicion)">
                         </code-input>
+                          </label>
+                          
                     </div>
                    
                 </div>
@@ -56,7 +60,7 @@
             </div>
             <div class="col-lg-2 contenedor-controles">
                 <button mat-raised-button color="primary" (click)="sendResults()">Send answer</button>
-                <button mat-raised-button color="warn" (click)="nextQuestion(false)">Skip question</button>
+                <button mat-raised-button  (click)="nextQuestion(false)" style="background-color: #cd2026; color: white">Skip question</button>
             </div>
         </div>
 
@@ -66,7 +70,7 @@
 
 <div *ngIf="fin">
 
-    <div class="text-center text-decoration-underline">
+    <div class="text-center">
         <h1>Results</h1>
     </div>
 
@@ -86,12 +90,12 @@
         <h3 class="card-header text-center">Summary</h3>
         <div class="card-body">
         <div >
-          <h5 class="card-title text-decoration-underline">Lives left </h5>
+          <h4 class="card-title text-decoration-underline fs-5">Lives left </h4>
         <img class="imagenVida"*ngFor="let imagen of imagenesVidas; let i = index" src="assets/images/vida.png" alt="Vida {{ i + 1 }}">
         </div>
-          <h5 class="card-title text-decoration-underline">Correct answers </h5>
+          <h4 class="card-title text-decoration-underline fs-5">Correct answers </h4>
           {{respuestasCorrectas}}
-          <h5 class="card-title text-decoration-underline">Wrong answers </h5>
+          <h4 class="card-title text-decoration-underline fs-5">Wrong answers </h4>
           {{respuestasIncorrectas}}
 
 
