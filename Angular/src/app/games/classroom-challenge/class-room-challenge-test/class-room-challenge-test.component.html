@@ -158,7 +158,7 @@
             <div class="col-lg-10">
                 <div class="d-flex contenedor">
                     <div *ngFor="let palabra of palabras">
-                        <code-input inputType="text" *ngIf="!preguntaTerminada" [ngClass]="{'wrong': !correcto}" [isCodeHidden]="false"
+                        <code-input [isPrevFocusableAfterClearing]="false" inputType="text" *ngIf="!preguntaTerminada" [ngClass]="{'wrong': !correcto}" [isCodeHidden]="false"
                             [isCharsCode]="true" [disabled]="profesor" [codeLength]="palabra.longitud"
                             (codeChanged)="onCodeChanged($event,palabra.posicion)">
                         </code-input>
@@ -230,7 +230,7 @@
             <img matListItemIcon *ngIf="index+1==1"src="assets/images/first.png"  alt="First in the ranking">
             <img matListItemIcon *ngIf="index+1==2"src="assets/images/second.png"  alt="Second in the ranking">
             <img matListItemIcon *ngIf="index+1==3"src="assets/images/third.png"  alt="Third in the ranking">
-            <p matListItemIcon *ngIf="index+1 > 3">{{index}}</p>
+            <p matListItemIcon *ngIf="index+1 > 3">{{index+1}}</p>
             <div matListItemTitle>{{player.nombre}}</div>
             <div matListItemLine>{{player.score}}</div>
 

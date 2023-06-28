@@ -41,7 +41,7 @@
                 <div class="col-lg-10 col-md-12">
                     <div class="d-flex contenedor">
                         <div *ngFor="let palabra of palabras">
-                            <code-input  inputType="text" [ngClass]="{'wrong': !correcto}" [isCodeHidden]="false" [isCharsCode]="true" [codeLength]="palabra.longitud"
+                            <code-input [isPrevFocusableAfterClearing]="false" inputType="text" [ngClass]="{'wrong': !correcto}" [isCodeHidden]="false" [isCharsCode]="true" [codeLength]="palabra.longitud"
                                 (codeChanged)="onCodeChanged($event,palabra.posicion)">
                             </code-input>
                         </div>

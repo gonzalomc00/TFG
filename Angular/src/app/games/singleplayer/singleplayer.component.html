@@ -46,7 +46,7 @@
                     <div *ngFor="let palabra of palabras">
                         <label>
                             <span style="display:none">Word of answer input</span>
-                            <code-input inputType="text" [ngClass]="{'wrong': !correcto}"  [isCodeHidden]="false" [isCharsCode]="true" [codeLength]="palabra.longitud"
+                            <code-input [isPrevFocusableAfterClearing]="false" inputType="text" [ngClass]="{'wrong': !correcto}"  [isCodeHidden]="false" [isCharsCode]="true" [codeLength]="palabra.longitud"
                             (codeChanged)="onCodeChanged($event,palabra.posicion)">
                         </code-input>
                           </label>

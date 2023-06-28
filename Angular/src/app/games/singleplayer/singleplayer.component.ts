@@ -175,7 +175,7 @@ export class SingleplayerComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((confirmado: Boolean) => {
-        if (this.vidas >= 0) {
+        if (this.vidas > 0) {
           if (confirmado) {
             if ((this.indicePregunta < this.preguntas.length)) {
 

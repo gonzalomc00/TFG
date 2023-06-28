@@ -78,7 +78,9 @@
                        
                     </div>
                     <div class="col-lg-4"  *ngIf="isFile" >
-                        <img style="width: 300px; padding-top: 10px;"[src]="imageURL" alt="Question image preview">
+                        <div id="ImageField" class="text-center">
+                        <img class="image" [src]="imageURL" alt="Question image preview">
+                        </div>
                     </div>
                     
                 </div>

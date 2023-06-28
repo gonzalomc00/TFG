@@ -15,3 +15,18 @@
     margin-left: 50%;
     margin-bottom: 15px;
 }
+
+#ImageField {
+    width: 100%; /* Ocupa el ancho completo del contenedor padre */
+    height: 15vw; /* Alto del contenedor: 50% del ancho visible del dispositivo */
+    overflow: hidden;
+  }
+  
+  .image{
+    width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position:center;
+    
+  }
+  
