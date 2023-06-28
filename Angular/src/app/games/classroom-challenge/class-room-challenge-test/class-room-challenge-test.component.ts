@@ -262,7 +262,7 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
     let counter: number = 0;
 
     for (let pal of palabrasFiltradas) {
-      this.palabras.push({ palabra: pal, longitud: pal.length, posicion: counter })
+      this.palabras.push({ palabra: pal.toLocaleUpperCase(), longitud: pal.length, posicion: counter })
       counter++;
     }
 
@@ -280,7 +280,7 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
 
     //COMPROBAMOS LA RESPUESTA
     for (let i = 0; i < this.numeroPalabras; i++) {
-      if (this.palabras[i].palabra != this.respuesta[i]) {
+      if (this.palabras[i].palabra != this.respuesta[i].toLocaleUpperCase()) {
         correct = false
       }
     }
