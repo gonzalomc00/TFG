@@ -12,8 +12,10 @@ def enviarCorreoRegistro(destinatario, code):
     message = f"<html><head><title>New User</title></head><body><h1>Welcome to Cultural Challenge for English Students</h1><br>Your code is <em>{code}</em>.<br>Thank you.</body></html>"
  
     # setup the parameters of the message
-    password = "YmEuQj49"
-    msg['From'] = "CChase@um.es"
+    #password = "YmEuQj49"
+    #msg['From'] = "CChase@um.es"
+    msg['From'] = "gonzalomanzanrescarmona@gmail.com"
+    password= "shgjatxmznikrasv"
     msg['To'] = destinatario
     msg['Subject'] = "New Player CChase"
     
@@ -21,12 +23,14 @@ def enviarCorreoRegistro(destinatario, code):
     msg.attach(MIMEText(message, 'html'))
     
     #create server
-    server = smtplib.SMTP('smtp.um.es: 587')
+    server= smtplib.SMTP('smtp.gmail.com: 587')
+    #server = smtplib.SMTP('smtp.um.es: 587')
     
     server.starttls()
     
     # Login Credentials for sending the mail
-    server.login("guillermo.nunezc@um.es", password)
+    server.login("gonzalomanzanrescarmona@gmail.com", password)
+    #server.login("guillermo.nunezc@um.es", password)
     
 
     # send the message via the server.

@@ -280,7 +280,10 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
 
     //COMPROBAMOS LA RESPUESTA
     for (let i = 0; i < this.numeroPalabras; i++) {
-      if (this.palabras[i].palabra != this.respuesta[i].toLocaleUpperCase()) {
+      if(this.respuesta[i]==undefined){
+        correct=false
+      }
+      else if (this.palabras[i].palabra != this.respuesta[i].toLocaleUpperCase()) {
         correct = false
       }
     }

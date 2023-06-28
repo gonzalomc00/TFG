@@ -35,7 +35,7 @@
 
         <div *ngFor="let question of gameRecord.answers; let index= index">
             <div class="card mb-3 text-center"
-                [ngClass]="{'border-success text-success': !gameRecord.top &&(question.correctAnswer===question.answer), 'border-danger text-danger': !gameRecord.top && (question.correctAnswer!=question.answer)}">
+                [ngClass]="{'border-success text-success': !gameRecord.top &&((question.correctAnswer.toUpperCase()) ==(question.answer.toUpperCase())), 'border-danger text-danger': !gameRecord.top && (question.correctAnswer.toUpperCase()) !=(question.answer.toUpperCase())}">
                 <div class="card-header">
                     <div *ngIf="!gameRecord.top">
                     <mat-icon *ngIf="question.correctAnswer===question.answer">done</mat-icon>

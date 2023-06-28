@@ -68,9 +68,8 @@
 <div class="footer-basic">
   <footer>
       <ul class="list-inline">
-          <li class="list-inline-item"><a href="/">Home</a></li>
-          <li class="list-inline-item" *ngIf="user"><a href="/rankings">Rankings</a></li>
-          <li class="list-inline-item"><a href="#">About</a></li>
+          <li class="list-inline-item"><a [routerLink]="['/']">Home</a></li>
+          <li class="list-inline-item" *ngIf="user"><a [routerLink]="['/rankings']">Rankings</a></li>
       </ul>
       <p class="copyright">Universidad de Murcia © 2022-2023</p>
   </footer>

@@ -8,7 +8,7 @@
     <div *ngFor="let ranking of rankings">
         <mat-tab label={{ranking.tabName}}>
         <div class="card">
-            <img [src]="ranking.img" class="card-img-top" [alt]="ranking.imgDes">
+            <img [src]="ranking.img" class="card-img-top" [alt]="ranking.imgDes" style="margin-top:5px;">
             <div class="card-body">
                 <h5 class="card-title fs-2">{{ranking.cardText}}</h5>
             </div>
