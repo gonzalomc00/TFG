@@ -121,8 +121,7 @@
                             <li [ngClass]="{'tick-green': hasNonAlphaNumeric, 'cross-red': !hasNonAlphaNumeric}">Contain
                                 at least one non-alphanumeric character
                             </li>
-                            <li [ngClass]="{'tick-green': isValidated, 'cross-red': !isValidated}">Be identical to the
-                                second one
+                            <li [ngClass]="{'tick-green': isValidated, 'cross-red': !isValidated}">Be identical 
                             </li>
                         </ul>
                     </div>
@@ -156,5 +155,5 @@
 
    <hr>
    <h6>Already registered?</h6>
-   <button  mat-raised-button color="primary" [routerLink]="['/login']" type="button" class="btn btn-primary">Log in </button>
+   <button  mat-raised-button color="primary" [routerLink]="['/login']" type="button" class="btn btn-primary">Sign in </button>
 </div>
