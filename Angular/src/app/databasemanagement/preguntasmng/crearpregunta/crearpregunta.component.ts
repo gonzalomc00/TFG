@@ -115,7 +115,7 @@ export class CrearpreguntaComponent {
     if(this.information!=''){
       formData.append("information",this.information)
     }
-
+    if(this.country!='' && this.topic!='' && this.question!='' && this.answer!=''){
     if(!this.editing){
     this.questionS.addQuestion(formData).subscribe({
       next: () => {
@@ -136,6 +136,7 @@ export class CrearpreguntaComponent {
     })
 
   }
+}
     }
 
 

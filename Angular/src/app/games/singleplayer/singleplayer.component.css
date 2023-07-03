@@ -108,11 +108,12 @@ button {
     font-size: 1rem;
   
   }
+  
 
   #ImageField {
     background-color: 	#EEEDED;
     width: 100%; /* Ocupa el ancho completo del contenedor padre */
-    height: 30vw; /* Alto del contenedor: 50% del ancho visible del dispositivo */
+    height: 50vw; /* Alto del contenedor: 50% del ancho visible del dispositivo */
     overflow: hidden;
   }
 
