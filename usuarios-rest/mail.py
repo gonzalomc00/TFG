@@ -14,8 +14,8 @@ def enviarCorreoRegistro(destinatario, code):
     # setup the parameters of the message
     #password = "YmEuQj49"
     #msg['From'] = "CChase@um.es"
-    msg['From'] = "gonzalomanzanrescarmona@gmail.com"
-    password= "shgjatxmznikrasv"
+    msg['From'] = ""
+    password= ""
     msg['To'] = destinatario
     msg['Subject'] = "New Player CChase"
     
@@ -23,14 +23,14 @@ def enviarCorreoRegistro(destinatario, code):
     msg.attach(MIMEText(message, 'html'))
     
     #create server
-    server= smtplib.SMTP('smtp.gmail.com: 587')
-    #server = smtplib.SMTP('smtp.um.es: 587')
+    #server= smtplib.SMTP('smtp.gmail.com: 587')
+    server = smtplib.SMTP('smtp.um.es: 587')
     
     server.starttls()
     
     # Login Credentials for sending the mail
-    server.login("gonzalomanzanrescarmona@gmail.com", password)
-    #server.login("guillermo.nunezc@um.es", password)
+    #server.login("gonzalomanzanrescarmona@gmail.com", password)
+    server.login("guillermo.nunezc@um.es", password)
     
 
     # send the message via the server.
