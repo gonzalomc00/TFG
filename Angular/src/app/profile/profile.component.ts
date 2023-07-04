@@ -36,7 +36,9 @@ export class ProfileComponent implements OnInit {
   games: GameRecord[]
 
 constructor(private auth: AuthService, private image:ImageService,private _snackBar:MatSnackBar,private activatedRoute:ActivatedRoute, private userService: UserService, private router:Router) {
-
+  this.activatedRoute.params.subscribe(val => {
+    this.ngOnInit()
+  });
 }
 
 

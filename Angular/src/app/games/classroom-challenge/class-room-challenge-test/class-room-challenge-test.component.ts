@@ -73,6 +73,8 @@ export class ClassRoomChallengeTestComponent implements OnInit,OnDestroy {
       this.socketService.salirSala(this.sala.id,this.user!.correo); // Envía una señal al servidor antes de cerrar la pestaña o cambiar de vista
     }
 
+    this.socketService.cerrarSocket()
+
   }
 
 

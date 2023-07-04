@@ -99,5 +99,8 @@ export class SocketService {
     this.socket.emit('salirSala',sala,user)
   }
 
+  public cerrarSocket(){
+    this.socket.disconnect();
+  }
 
 }
