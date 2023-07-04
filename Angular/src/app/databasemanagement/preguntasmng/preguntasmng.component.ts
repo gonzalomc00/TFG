@@ -87,13 +87,13 @@ export class PreguntasmngComponent implements OnInit {
     return (data) => {
       if (this.respFilter) {
         if (this.topicFilter && this.countryFilter)
-          return data.topic == this.topicFilter && data.country == this.countryFilter && data.answer.includes(this.respFilter)
+          return data.topic == this.topicFilter && data.country == this.countryFilter && data.answer.toLocaleUpperCase().includes(this.respFilter.toLocaleUpperCase())
         if (this.topicFilter)
-          return data.topic == this.topicFilter && data.answer.includes(this.respFilter)
+          return data.topic == this.topicFilter && data.answer.toLocaleUpperCase().includes(this.respFilter.toLocaleUpperCase())
         if (this.countryFilter)
-          return data.country == this.countryFilter && data.answer.includes(this.respFilter)
+          return data.country == this.countryFilter && data.answer.toLocaleUpperCase().includes(this.respFilter.toLocaleUpperCase())
 
-        return data.answer.includes(this.respFilter)
+        return data.answer.toLocaleUpperCase().includes(this.respFilter.toLocaleUpperCase())
       }
       else {
         if (this.topicFilter && this.countryFilter)
